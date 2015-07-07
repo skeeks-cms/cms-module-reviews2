@@ -32,14 +32,32 @@ class m150703_162718_create_table__reviews2_message extends Migration
             'created_at'            => Schema::TYPE_INTEGER . ' NULL',
             'updated_at'            => Schema::TYPE_INTEGER . ' NULL',
 
-            'name'                  => Schema::TYPE_STRING . '(255) NOT NULL',
-            'description'           => Schema::TYPE_TEXT . ' NULL',
+            'element_id'            => Schema::TYPE_INTEGER . ' NOT NULL',
+            'content_id'            => Schema::TYPE_INTEGER . ' NOT NULL',
 
-            'code'                  => Schema::TYPE_STRING . '(32) NULL',
+            'dignity'               => Schema::TYPE_TEXT . ' NULL',
+            'disadvantages'         => Schema::TYPE_TEXT . ' NULL',
+            'comments'              => Schema::TYPE_TEXT . ' NULL',
 
-            'emails'                => Schema::TYPE_TEXT . ' NULL',
-            'phones'                => Schema::TYPE_TEXT . ' NULL',
-            'user_ids'              => Schema::TYPE_TEXT . ' NULL',
+            'rating'                => Schema::TYPE_INTEGER . ' NOT NULL',
+
+            'status'                => Schema::TYPE_SMALLINT . ' NOT NULL DEFAULT 0', //статус, активна некативна, удалено
+
+            'ip'                    => Schema::TYPE_STRING . '(32) NULL',
+            'page_url'              => Schema::TYPE_STRING . '(500) NULL',
+
+            'data_server'           => Schema::TYPE_TEXT . ' NULL',
+            'data_session'          => Schema::TYPE_TEXT . ' NULL',
+            'data_cookie'           => Schema::TYPE_TEXT . ' NULL',
+            'data_request'          => Schema::TYPE_TEXT . ' NULL',
+            'additional_data'       => Schema::TYPE_TEXT . ' NULL',
+
+            'site_code'             => "CHAR(15) NULL",
+
+            'user_name'                 => Schema::TYPE_STRING . '(255) NULL',
+            'user_email'                => Schema::TYPE_STRING . '(255) NULL',
+            'user_phone'                => Schema::TYPE_STRING . '(255) NULL',
+            'user_city'                 => Schema::TYPE_STRING . '(255) NULL',
 
         ], $tableOptions);
 
@@ -49,10 +67,22 @@ class m150703_162718_create_table__reviews2_message extends Migration
         $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(created_at);");
         $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(updated_at);");
 
-        $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(name);");
-        $this->execute("ALTER TABLE {{%reviews2_message}} ADD UNIQUE(code);");
+        $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(status);");
+        $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(rating);");
 
-        $this->execute("ALTER TABLE {{%reviews2_message}} COMMENT = 'Формы';");
+        $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(element_id);");
+        $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(content_id);");
+
+        $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(ip);");
+        $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(page_url);");
+        $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(site_code);");
+
+        $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(user_name);");
+        $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(user_phone);");
+        $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(user_email);");
+        $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(user_city);");
+
+        $this->execute("ALTER TABLE {{%reviews2_message}} COMMENT = 'Отзывы';");
 
         $this->addForeignKey(
             'reviews2_message_created_by', "{{%reviews2_message}}",
@@ -63,12 +93,31 @@ class m150703_162718_create_table__reviews2_message extends Migration
             'reviews2_message_updated_by', "{{%reviews2_message}}",
             'updated_by', '{{%cms_user}}', 'id', 'SET NULL', 'SET NULL'
         );
+
+
+        $this->addForeignKey(
+            'reviews2_message_site_code_fk', "{{%reviews2_message}}",
+            'site_code', '{{%cms_site}}', 'code', 'SET NULL', 'SET NULL'
+        );
+
+        $this->addForeignKey(
+            'reviews2_message_element_id', "{{%reviews2_message}}",
+            'element_id', '{{%cms_content_element}}', 'id', 'CASCADE', 'CASCADE'
+        );
+
+        $this->addForeignKey(
+            'reviews2_message_content_id', "{{%reviews2_message}}",
+            'content_id', '{{%cms_content}}', 'id', 'RESTRICT', 'RESTRICT'
+        );
     }
 
     public function down()
     {
         $this->dropForeignKey("reviews2_message_created_by", "{{%reviews2_message}}");
         $this->dropForeignKey("reviews2_message_updated_by", "{{%reviews2_message}}");
+        $this->dropForeignKey("reviews2_message_site_code_fk", "{{%reviews2_message}}");
+        $this->dropForeignKey("reviews2_message_element_id", "{{%reviews2_message}}");
+        $this->dropForeignKey("reviews2_message_content_id", "{{%reviews2_message}}");
 
         $this->dropTable("{{%reviews2_message}}");
     }

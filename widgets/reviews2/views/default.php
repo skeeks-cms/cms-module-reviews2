@@ -19,11 +19,7 @@ $model = $widget->modelMessage;
         'value' => $widget->cmsContentElement->id
     ])->label(false); ?>
 
-    <?= $form->field($model, 'content_id')->hiddenInput([
-        'value' => $widget->cmsContentElement->content_id
-    ])->label(false); ?>
-
-    <?= $form->field($model, 'rating')->textInput(); ?>
+    <?= $form->field($model, 'rating')->radioList(\Yii::$app->reviews2->ratings); ?>
     <?= $form->field($model, 'comments')->textarea([
         'rows' => 5
     ]); ?>

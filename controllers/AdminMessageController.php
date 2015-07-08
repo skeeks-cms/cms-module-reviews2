@@ -23,7 +23,7 @@ class AdminMessageController extends AdminModelEditorController
     public function init()
     {
         $this->name                     = "Управление отзывами";
-        $this->modelShowAttribute       = "name";
+        $this->modelShowAttribute       = "id";
         $this->modelClassName           = Reviews2Message::className();
 
         parent::init();

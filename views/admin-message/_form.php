@@ -2,78 +2,155 @@
 
 use yii\helpers\Html;
 use skeeks\cms\modules\admin\widgets\form\ActiveFormUseTab as ActiveForm;
-use common\models\User;
-
 /* @var $this yii\web\View */
-/* @var $model \yii\db\ActiveRecord */
-/* @var $console \skeeks\cms\controllers\AdminUserController */
+/* @var $action \skeeks\cms\modules\admin\actions\modelEditor\AdminOneModelEditAction */
+/* @var $model \skeeks\modules\cms\form2\models\Form2FormSend */
+$model = $action->controller->model;
+
+if ($model->isNewRecord !== null)
+{
+    if ($model->status == \skeeks\cms\reviews2\models\Reviews2Message::STATUS_NEW && !$model->processed_by)
+    {
+        $model->processed_by = \Yii::$app->user->identity->id;
+        $model->processed_at = \Yii::$app->formatter->asTimestamp(time());
+        $model->status = \skeeks\cms\reviews2\models\Reviews2Message::STATUS_PROCESSED;
+
+        $model->save();
+    }
+}
+
+
 ?>
 
+<? $form = ActiveForm::begin(); ?>
 
-<?php $form = ActiveForm::begin(); ?>
-<?php  ?>
-
-<?= $form->fieldSet('Общая информация')?>
-    <?= $form->field($model, 'name')->textInput(); ?>
-    <?= $form->field($model, 'code')->textInput(); ?>
-    <?= $form->field($model, 'description')->textarea(); ?>
-<?= $form->fieldSetEnd(); ?>
+<?= $form->fieldSet('Основная информация'); ?>
 
 
-<?= $form->fieldSet('Настройки уведомлений')?>
-
+    <?= $form->fieldSelect($model, 'rating', \Yii::$app->reviews2->ratings); ?>
+    <?= $form->field($model, 'comments')->textarea(['rows' => 5]); ?>
+    <?= $form->field($model, 'dignity')->textarea(['rows' => 5]); ?>
+    <?= $form->field($model, 'disadvantages')->textarea(['rows' => 5]); ?>
 
 <?= $form->fieldSetEnd(); ?>
 
+<?= $form->fieldSet('Автор'); ?>
+    <?= $form->fieldSelect($model, 'created_by', \yii\helpers\ArrayHelper::map(
+            \skeeks\cms\models\User::find()->active()->all(),
+            'id',
+            'displayName'
+        )) ?>
 
-<?= $form->fieldSet('Элементы формы')?>
-    <?/*= \skeeks\cms\modules\admin\widgets\RelatedModelsGrid::widget([
-        'label'             => "Элементы формы",
-        'hint'              => "",
-        'parentModel'       => $model,
-        'relation'          => [
-            'form_id' => 'id'
-        ],
+    <?= $form->field($model, 'user_name')->textInput(); ?>
+    <?= $form->field($model, 'user_email')->textInput(); ?>
+    <?= $form->field($model, 'user_phone')->textInput(); ?>
+    <?= $form->field($model, 'user_city')->textInput(); ?>
+<?= $form->fieldSetEnd(); ?>
 
-        'sort'              => [
-            'defaultOrder' =>
+<?= $form->fieldSet('Обработка'); ?>
+    <?= $form->fieldSelect($model, 'status', \skeeks\cms\reviews2\models\Reviews2Message::$statuses); ?>
+
+    <?= $form->fieldSelect($model, 'processed_by', \yii\helpers\ArrayHelper::map(
+            \skeeks\cms\models\User::find()->active()->all(),
+            'id',
+            'displayName'
+        )); ?>
+<?= $form->fieldSetEnd(); ?>
+
+<?= $form->fieldSet('Дополнительная информация'); ?>
+    <?= \yii\widgets\DetailView::widget([
+        'model'         => $model,
+        'attributes'    =>
+        [
             [
-                'priority' => SORT_DESC
-            ]
-        ],
-
-        'controllerRoute'   => 'form/admin-form-field',
-        'gridViewOptions'   => [
-
-            'sortable' => true,
-            'columns' => [
-                //['class' => 'yii\grid\SerialColumn'],
-                'attribute',
-                'name',
-                'label',
-                'hint',
-                [
-                    'class' => \skeeks\cms\grid\BooleanColumn::className(),
-                    'attribute' => 'active'
-                ],
+                'attribute'     => 'id',
+                'label'         => 'Номер сообщения',
             ],
-        ],
-    ]); */?>
 
+            [
+                'attribute' => 'created_at',
+                'value' => \Yii::$app->formatter->asDatetime($model->created_at, 'medium') . "(" . \Yii::$app->formatter->asRelativeTime($model->created_at) . ")",
+            ],
+
+            [
+                'format' => 'raw',
+                'label' => 'Отправлено с сайта',
+                'value' => "<a href=\"{$model->site->url}\" target=\"_blank\" data-pjax=\"0\">{$model->site->name}</a>",
+            ],
+
+            [
+                'format' => 'raw',
+                'label' => 'Отправил пользователь',
+                'value' => "{$model->createdBy->displayName}",
+            ],
+
+            [
+                'attribute' => 'ip',
+                'label' => 'Ip адрес отправителя',
+            ],
+
+            [
+                'attribute' => 'page_url',
+                'format' => 'raw',
+                'label' => 'Отправлена со страницы',
+                'value' => Html::a($model->page_url, $model->page_url, [
+                    'target' => '_blank',
+                    'data-pjax' => 0
+                ])
+            ],
+        ]
+    ]); ?>
 
 <?= $form->fieldSetEnd(); ?>
 
-<?= $form->buttonsCreateOrUpdate($model); ?>
-<?php ActiveForm::end(); ?>
 
-<!--<div class="row">
-    <div class="col-md-12">
-        <div class="" style="border: 1px solid rgba(32, 168, 216, 0.23); padding: 10px; margin-top: 10px;">
-            <h2>Вот так будет выглядеть форма:</h2>
-            <hr />
-            <?/*= $model->render(); */?>
-        </div>
 
-    </div>
+<?= $form->fieldSet('Для разработчиков'); ?>
+
+<div class="sx-block">
+  <h3>Дополнительные данные, которые могут пригодиться в некоторых случаях, разработчикам.</h3>
+  <small>Для удобства просмотра данных, можно воспользоваться сервисом: <a href="http://jsonformatter.curiousconcept.com/#" target="_blank">http://jsonformatter.curiousconcept.com/#</a></small>
 </div>
--->
+<hr />
+
+
+    <?= \yii\widgets\DetailView::widget([
+        'model'         => $model,
+        'attributes'    =>
+        [
+            [
+                'attribute' => 'data_server',
+                'format' => 'raw',
+                'label' => 'SERVER',
+                'value' => "<textarea class='form-control' rows=\"10\">" . \yii\helpers\Json::encode($model->data_server) . "</textarea>"
+            ],
+
+            [
+                'attribute' => 'data_cookie',
+                'format' => 'raw',
+                'label' => 'COOKIE',
+                'value' => "<textarea class='form-control' rows=\"5\">" . \yii\helpers\Json::encode($model->data_cookie) . "</textarea>"
+            ],
+
+            [
+                'attribute' => 'data_session',
+                'format' => 'raw',
+                'label' => 'SESSION',
+                'value' => "<textarea class='form-control' rows=\"5\">" . \yii\helpers\Json::encode($model->data_session) . "</textarea>"
+            ],
+
+            [
+                'attribute' => 'data_request',
+                'format' => 'raw',
+                'label' => 'REQUEST',
+                'value' => "<textarea class='form-control' rows=\"10\">" . \yii\helpers\Json::encode($model->data_request) . "</textarea>"
+            ],
+
+        ]
+    ]); ?>
+
+<?= $form->fieldSetEnd(); ?>
+
+<?= $form->buttonsStandart($model); ?>
+
+<? ActiveForm::end(); ?>

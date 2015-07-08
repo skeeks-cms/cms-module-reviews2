@@ -24,55 +24,35 @@
         [
             'attribute' => 'status',
             'class' => \yii\grid\DataColumn::className(),
-            'filter' => \skeeks\modules\cms\form2\models\Form2FormSend::$statuses,
+            'filter' => \skeeks\cms\reviews2\models\Reviews2Message::$statuses,
             'format' => 'raw',
-            'value' => function(\skeeks\modules\cms\form2\models\Form2FormSend $model)
+            'value' => function(\skeeks\cms\reviews2\models\Reviews2Message $model)
             {
-                if ($model->status == \skeeks\modules\cms\form2\models\Form2FormSend::STATUS_NEW)
+                if ($model->status == \skeeks\cms\reviews2\models\Reviews2Message::STATUS_NEW)
                 {
-                    $class = "danger";
-                } else if ($model->status == \skeeks\modules\cms\form2\models\Form2FormSend::STATUS_PROCESSED)
+                    $class = "default";
+                } else if ($model->status == \skeeks\cms\reviews2\models\Reviews2Message::STATUS_PROCESSED)
                 {
                     $class = "warning";
-                } else if ($model->status == \skeeks\modules\cms\form2\models\Form2FormSend::STATUS_EXECUTED)
+                }  else if ($model->status == \skeeks\cms\reviews2\models\Reviews2Message::STATUS_CANCELED)
+                {
+                    $class = "danger";
+                } else if ($model->status == \skeeks\cms\reviews2\models\Reviews2Message::STATUS_ALLOWED)
                 {
                     $class = "success";
                 }
 
-                return '<span class="label label-' . $class . '">' . \yii\helpers\ArrayHelper::getValue(\skeeks\modules\cms\form2\models\Form2FormSend::$statuses, $model->status) . '</span>';
+                return '<span class="label label-' . $class . '">' . \yii\helpers\ArrayHelper::getValue(\skeeks\cms\reviews2\models\Reviews2Message::$statuses, $model->status) . '</span>';
             }
         ],
 
-
-        [
-            'class' => \skeeks\cms\grid\DateTimeColumnData::className(),
-            'attribute' => 'processed_at'
-        ],
-
-        [
-            'class' => \skeeks\cms\grid\UserColumnData::className(),
-            'attribute' => 'processed_by'
-        ],
-
-
-
-        [
-            'attribute' => 'form_id',
-            'class' => \yii\grid\DataColumn::className(),
-            'filter' => \yii\helpers\ArrayHelper::map(
-                \skeeks\modules\cms\form2\models\Form2Form::find()->all(),
-                'id',
-                'name'
-            ),
-            'value' => function(\skeeks\modules\cms\form2\models\Form2FormSend $model)
-            {
-                return $model->form->name;
-            }
-        ],
 
         [
             'class' => \skeeks\cms\grid\CreatedAtColumn::className(),
-            'label' => 'Отправлена'
+            'label' => 'Добавлен'
+        ],
+        [
+            'class' => \skeeks\cms\grid\CreatedByColumn::className(),
         ],
 
         [
@@ -83,13 +63,46 @@
                 'code',
                 'name'
             ),
-            'value' => function(\skeeks\modules\cms\form2\models\Form2FormSend $model)
+            'value' => function(\skeeks\cms\reviews2\models\Reviews2Message $model)
             {
                 return $model->site->name;
             }
         ],
 
-        'comment'
+        [
+            'filter' => false,
+            'attribute' => 'element_id',
+            'class' => \yii\grid\DataColumn::className(),
+            'value' => function(\skeeks\cms\reviews2\models\Reviews2Message $model)
+            {
+                return $model->element->name;
+            }
+        ],
+        [
+            'filter' => \yii\helpers\ArrayHelper::map(
+                \skeeks\cms\models\CmsContent::find()->all(),
+                'id',
+                'name'
+            ),
+            'attribute' => 'content_id',
+            'class' => \yii\grid\DataColumn::className(),
+            'value' => function(\skeeks\cms\reviews2\models\Reviews2Message $model)
+            {
+                return $model->element->cmsContent->name;
+            }
+        ],
+
+        [
+            'filter' => \Yii::$app->reviews2->ratings,
+            'attribute' => 'rating',
+            'class' => \yii\grid\DataColumn::className(),
+
+        ],
+        /*'comments',*/
+        /*'user_name',
+        'user_email',
+        'user_phone',
+        'user_city'*/
 
     ],
 ]); ?>

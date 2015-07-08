@@ -26,6 +26,27 @@ class BackendController extends Controller
     {
         $rr = new RequestResponse();
 
+        $model = new Reviews2Message();
+
+        if ($rr->isRequestOnValidateAjaxForm())
+        {
+            return $rr->ajaxValidateForm($model);
+        }
+
+        if ($rr->isRequestAjaxPost())
+        {
+            $model->page_url    = \Yii::$app->request->referrer;
+            if ($model->load(\Yii::$app->request->post()) && $model->save())
+            {
+                $rr->success = true;
+                $rr->message = "Отзыв успешно добавлен";
+            } else
+            {
+                $rr->success = false;
+                $rr->message = "Отзыв не добавлен";
+            }
+        }
+
         return $rr;
     }
 }

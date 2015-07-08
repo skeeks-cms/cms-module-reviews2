@@ -31,9 +31,13 @@ class m150703_162718_create_table__reviews2_message extends Migration
 
             'created_at'            => Schema::TYPE_INTEGER . ' NULL',
             'updated_at'            => Schema::TYPE_INTEGER . ' NULL',
+            'published_at'          => Schema::TYPE_INTEGER . ' NULL',
+
+            'processed_by'          => Schema::TYPE_INTEGER . ' NULL', //пользователь который принял заявку
+            'processed_at'          => Schema::TYPE_INTEGER . ' NULL', //пользователь который принял заявку
 
             'element_id'            => Schema::TYPE_INTEGER . ' NOT NULL',
-            'content_id'            => Schema::TYPE_INTEGER . ' NOT NULL',
+            'content_id'            => Schema::TYPE_INTEGER . ' NULL',
 
             'dignity'               => Schema::TYPE_TEXT . ' NULL',
             'disadvantages'         => Schema::TYPE_TEXT . ' NULL',
@@ -44,13 +48,12 @@ class m150703_162718_create_table__reviews2_message extends Migration
             'status'                => Schema::TYPE_SMALLINT . ' NOT NULL DEFAULT 0', //статус, активна некативна, удалено
 
             'ip'                    => Schema::TYPE_STRING . '(32) NULL',
-            'page_url'              => Schema::TYPE_STRING . '(500) NULL',
+            'page_url'              => Schema::TYPE_TEXT . ' NULL',
 
             'data_server'           => Schema::TYPE_TEXT . ' NULL',
             'data_session'          => Schema::TYPE_TEXT . ' NULL',
             'data_cookie'           => Schema::TYPE_TEXT . ' NULL',
             'data_request'          => Schema::TYPE_TEXT . ' NULL',
-            'additional_data'       => Schema::TYPE_TEXT . ' NULL',
 
             'site_code'             => "CHAR(15) NULL",
 
@@ -67,6 +70,11 @@ class m150703_162718_create_table__reviews2_message extends Migration
         $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(created_at);");
         $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(updated_at);");
 
+        $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(published_at);");
+
+        $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(processed_at);");
+        $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(processed_by);");
+
         $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(status);");
         $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(rating);");
 
@@ -74,7 +82,6 @@ class m150703_162718_create_table__reviews2_message extends Migration
         $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(content_id);");
 
         $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(ip);");
-        $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(page_url);");
         $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(site_code);");
 
         $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(user_name);");
@@ -107,8 +114,14 @@ class m150703_162718_create_table__reviews2_message extends Migration
 
         $this->addForeignKey(
             'reviews2_message_content_id', "{{%reviews2_message}}",
-            'content_id', '{{%cms_content}}', 'id', 'RESTRICT', 'RESTRICT'
+            'content_id', '{{%cms_content}}', 'id', 'SET NULL', 'SET NULL'
         );
+
+        $this->addForeignKey(
+            'reviews2_message_processed_by', "{{%reviews2_message}}",
+            'processed_by', '{{%cms_user}}', 'id', 'SET NULL', 'SET NULL'
+        );
+
     }
 
     public function down()
@@ -118,6 +131,7 @@ class m150703_162718_create_table__reviews2_message extends Migration
         $this->dropForeignKey("reviews2_message_site_code_fk", "{{%reviews2_message}}");
         $this->dropForeignKey("reviews2_message_element_id", "{{%reviews2_message}}");
         $this->dropForeignKey("reviews2_message_content_id", "{{%reviews2_message}}");
+        $this->dropForeignKey("reviews2_message_processed_by", "{{%reviews2_message}}");
 
         $this->dropTable("{{%reviews2_message}}");
     }

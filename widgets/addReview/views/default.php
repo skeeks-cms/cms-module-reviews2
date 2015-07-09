@@ -6,7 +6,7 @@
  * @date 07.07.2015
  */
 /* @var $this yii\web\View */
-/* @var $widget \skeeks\cms\reviews2\widgets\reviews2\Reviews2Widget */
+/* @var $widget \skeeks\cms\reviews2\widgets\addReview\Reviews2AddReviewWidget */
 
 $model = $widget->modelMessage;
 ?>
@@ -24,34 +24,8 @@ $model = $widget->modelMessage;
         'rows' => 5
     ]); ?>
 
-
     <?= \yii\helpers\Html::submitButton("" . \Yii::t('app', $widget->btnSubmit), [
         'class' => $widget->btnSubmitClass,
     ]); ?>
 
 <? \skeeks\cms\base\widgets\ActiveFormAjaxSubmit::end(); ?>
-
-
-
-
-<? if ($widget->enabledPjaxPagination == \skeeks\cms\components\Cms::BOOL_Y) : ?>
-    <? \skeeks\cms\modules\admin\widgets\Pjax::begin(); ?>
-<? endif; ?>
-
-    <? echo \yii\widgets\ListView::widget([
-        'dataProvider'      => $widget->dataProvider,
-        'itemView'          => 'review-item',
-        'emptyText'          => '',
-        'options'           =>
-        [
-            'tag'   => 'div',
-        ],
-        'itemOptions' => [
-            'tag' => false
-        ],
-        'layout'            => "\n{items}{$summary}\n<p class=\"row\">{pager}</p>"
-    ])?>
-
-<? if ($widget->enabledPjaxPagination == \skeeks\cms\components\Cms::BOOL_Y) : ?>
-    <? \skeeks\cms\modules\admin\widgets\Pjax::end(); ?>
-<? endif; ?>

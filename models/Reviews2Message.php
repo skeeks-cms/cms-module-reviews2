@@ -112,6 +112,8 @@ class Reviews2Message extends \skeeks\cms\models\Core
             ['processed_at', 'integer'],
             ['processed_by', 'integer'],
 
+            ['user_email', 'email'],
+
             ['data_request', 'default', 'value' => $_REQUEST],
             ['data_server', 'default', 'value' => $_SERVER],
             ['data_cookie', 'default', 'value' => $_COOKIE],
@@ -154,8 +156,8 @@ class Reviews2Message extends \skeeks\cms\models\Core
             'data_cookie' => Yii::t('app', 'Data Cookie'),
             'data_request' => Yii::t('app', 'Data Request'),
             'site_code' => Yii::t('app', 'Site Code'),
-            'user_name' => Yii::t('app', 'User Name'),
-            'user_email' => Yii::t('app', 'User Email'),
+            'user_name' => Yii::t('app', 'Имя'),
+            'user_email' => Yii::t('app', 'Email'),
             'user_phone' => Yii::t('app', 'User Phone'),
             'user_city' => Yii::t('app', 'User City'),
             'processed_at' => Yii::t('app', 'Когда обратали'),

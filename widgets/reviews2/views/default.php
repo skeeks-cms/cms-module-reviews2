@@ -10,28 +10,6 @@
 
 $model = $widget->modelMessage;
 ?>
-<? $form = \skeeks\cms\base\widgets\ActiveFormAjaxSubmit::begin([
-    'action'        => \skeeks\cms\helpers\UrlHelper::construct('/reviews2/backend/submit')->toString(),
-    'validationUrl' => \skeeks\cms\helpers\UrlHelper::construct('/reviews2/backend/submit')->enableAjaxValidateForm()->toString()
-]); ?>
-
-    <?= $form->field($model, 'element_id')->hiddenInput([
-        'value' => $widget->cmsContentElement->id
-    ])->label(false); ?>
-
-    <?= $form->field($model, 'rating')->radioList(\Yii::$app->reviews2->ratings); ?>
-    <?= $form->field($model, 'comments')->textarea([
-        'rows' => 5
-    ]); ?>
-
-
-    <?= \yii\helpers\Html::submitButton("" . \Yii::t('app', $widget->btnSubmit), [
-        'class' => $widget->btnSubmitClass,
-    ]); ?>
-
-<? \skeeks\cms\base\widgets\ActiveFormAjaxSubmit::end(); ?>
-
-
 
 
 <? if ($widget->enabledPjaxPagination == \skeeks\cms\components\Cms::BOOL_Y) : ?>
@@ -55,3 +33,29 @@ $model = $widget->modelMessage;
 <? if ($widget->enabledPjaxPagination == \skeeks\cms\components\Cms::BOOL_Y) : ?>
     <? \skeeks\cms\modules\admin\widgets\Pjax::end(); ?>
 <? endif; ?>
+
+
+<? $form = \skeeks\cms\base\widgets\ActiveFormAjaxSubmit::begin([
+    'action'        => \skeeks\cms\helpers\UrlHelper::construct('/reviews2/backend/submit')->toString(),
+    'validationUrl' => \skeeks\cms\helpers\UrlHelper::construct('/reviews2/backend/submit')->enableAjaxValidateForm()->toString()
+]); ?>
+
+    <?= $form->field($model, 'element_id')->hiddenInput([
+        'value' => $widget->cmsContentElement->id
+    ])->label(false); ?>
+
+    <? if (\Yii::$app->user->isGuest) : ?>
+        <?= $form->field($model, 'user_name')->textInput(); ?>
+        <?= $form->field($model, 'user_email')->hint('Email не будет опубликован публично')->textInput(); ?>
+    <? endif; ?>
+    <?= $form->field($model, 'rating')->radioList(\Yii::$app->reviews2->ratings); ?>
+    <?= $form->field($model, 'comments')->textarea([
+        'rows' => 5
+    ]); ?>
+
+
+    <?= \yii\helpers\Html::submitButton("" . \Yii::t('app', $widget->btnSubmit), [
+        'class' => $widget->btnSubmitClass,
+    ]); ?>
+
+<? \skeeks\cms\base\widgets\ActiveFormAjaxSubmit::end(); ?>

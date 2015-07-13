@@ -25,7 +25,7 @@ class Reviews2Component extends Component
     public $enabledBeforeApproval                   = Cms::BOOL_Y;
     public $maxValue                                = 5;
 
-    public $maxCountMessagesForUser                 = 0;
+    public $maxCountMessagesForUser                 = 1;
 
     public $elementPropertyRatingCode               = "reviews2_rating";
     public $elementPropertyCountCode                = "reviews2_count";
@@ -35,7 +35,7 @@ class Reviews2Component extends Component
 
     public $securityEnabledRateLimit                = Cms::BOOL_Y;
     public $securityRateLimitRequests               = 10;
-    public $securityRateLimitTime                   = 30600;
+    public $securityRateLimitTime                   = 3600;
 
     public $messageSuccessBeforeApproval            = "Отзыв успешно добавлен, и будет опубликован на сайте после проверки модератора.";
     public $messageSuccess                          = "Отзыв успешно добавлен, спасибо.";

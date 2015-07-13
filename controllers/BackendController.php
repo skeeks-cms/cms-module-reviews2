@@ -88,6 +88,8 @@ class BackendController extends Controller
                         '>=', 'created_at', $lastTime
                     ]);
 
+                    //print_r($messagesFind2->createCommand()->rawSql);die;
+
                     if ($messagesFind2->count() >= \Yii::$app->reviews2->securityRateLimitRequests)
                     {
                         $rr->success = false;

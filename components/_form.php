@@ -18,6 +18,7 @@ use skeeks\cms\modules\admin\widgets\form\ActiveFormUseTab as ActiveForm;
 <?= $form->fieldSet('Основное'); ?>
     <?= $form->fieldRadioListBoolean($model, 'enabledBeforeApproval'); ?>
     <?= $form->fieldInputInt($model, 'maxValue')->hint('Вы можете указать максимальное значение рейтинга, то есть пользователь будет голосовать, высталяя оценку от 1 до указанного вами значения с шагом 1.'); ?>
+    <?= $form->fieldInputInt($model, 'maxCountMessagesForUser'); ?>
     <?= $form->field($model, 'messageSuccessBeforeApproval')->textarea(['rows' => 4]); ?>
     <?= $form->field($model, 'messageSuccess')->textarea(['rows' => 4]); ?>
 

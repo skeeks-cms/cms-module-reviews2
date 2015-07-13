@@ -8,6 +8,7 @@
 namespace skeeks\cms\reviews2\controllers;
 
 use skeeks\cms\components\Cms;
+use skeeks\cms\helpers\Request;
 use skeeks\cms\helpers\RequestResponse;
 use skeeks\cms\modules\admin\actions\modelEditor\AdminOneModelEditAction;
 use skeeks\cms\modules\admin\actions\modelEditor\ModelEditorGridAction;
@@ -39,21 +40,85 @@ class BackendController extends Controller
             $model->scenario = Reviews2Message::SCENARIO_SITE_INSERT;
 
             $model->page_url    = \Yii::$app->request->referrer;
-            if ($model->load(\Yii::$app->request->post()) && $model->save())
+            if ($model->load(\Yii::$app->request->post()))
             {
-                $rr->success = true;
+                //Проверка на максимальное количество отзывов к одному посту от одного пользователя.
+                    $messagesFind = Reviews2Message::find();
+                    if (\Yii::$app->user->isGuest)
+                    {
+                        $messagesFind->andWhere(['ip' => Request::getRealUserIp()]);
+                    } else
+                    {
+                        $messagesFind->andWhere(['created_by' => \Yii::$app->user->identity->id]);
+                    }
 
-                if (\Yii::$app->reviews2->enabledBeforeApproval == Cms::BOOL_Y)
+                    $messagesFind2 = clone $messagesFind;
+
+                    $messagesFind
+                            ->andWhere(['status' => Reviews2Message::STATUS_ALLOWED])
+                            ->andWhere(['element_id' => $model->element_id])
+                    ;
+
+                    if (\Yii::$app->reviews2->maxCountMessagesForUser != 0)
+                    {
+                        if ($messagesFind->count() >= \Yii::$app->reviews2->maxCountMessagesForUser)
+                        {
+                            $rr->success = false;
+                            $rr->message = "Отзыв уже добавлен ранее.";
+
+                            return $rr;
+                        }
+                    }
+
+                //Проверка частоты добавления отзывов
+                if (\Yii::$app->reviews2->securityEnabledRateLimit == Cms::BOOL_Y)
                 {
-                    $rr->message = \Yii::$app->reviews2->messageSuccessBeforeApproval;
+                    $messagesFind2 = Reviews2Message::find();
+                    if (\Yii::$app->user->isGuest)
+                    {
+                        $messagesFind2->andWhere(['ip' => Request::getRealUserIp()]);
+                    } else
+                    {
+                        $messagesFind2->andWhere(['created_by' => \Yii::$app->user->identity->id]);
+                    }
+
+                    $lastTime = \Yii::$app->formatter->asTimestamp(time()) - (int) \Yii::$app->reviews2->securityRateLimitTime;
+
+                    $messagesFind2->andWhere([
+                        '>=', 'created_at', $lastTime
+                    ]);
+
+                    if ($messagesFind2->count() >= \Yii::$app->reviews2->securityRateLimitRequests)
+                    {
+                        $rr->success = false;
+                        $rr->message = "Вы слишком часто добавляете отзывы.";
+
+                        return $rr;
+                    }
+                }
+
+
+                if ($model->save())
+                {
+                    $rr->success = true;
+
+                    if (\Yii::$app->reviews2->enabledBeforeApproval == Cms::BOOL_Y)
+                    {
+                        $rr->message = \Yii::$app->reviews2->messageSuccessBeforeApproval;
+                    } else
+                    {
+                        $rr->message        = \Yii::$app->reviews2->messageSuccess;
+
+                        //Отключена предмодерация, сразу публикуем
+                        $model->status      = Reviews2Message::STATUS_ALLOWED;
+                        $model->save();
+                    }
                 } else
                 {
-                    $rr->message        = \Yii::$app->reviews2->messageSuccess;
-
-                    //Отключена предмодерация, сразу публикуем
-                    $model->status      = Reviews2Message::STATUS_ALLOWED;
-                    $model->save();
+                    $rr->success = false;
+                    $rr->message = "Отзыв не добавлен";
                 }
+
             } else
             {
                 $rr->success = false;

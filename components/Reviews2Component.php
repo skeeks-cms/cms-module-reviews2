@@ -25,6 +25,8 @@ class Reviews2Component extends Component
     public $enabledBeforeApproval                   = Cms::BOOL_Y;
     public $maxValue                                = 5;
 
+    public $maxCountMessagesForUser                 = 0;
+
     public $elementPropertyRatingCode               = "reviews2_rating";
     public $elementPropertyCountCode                = "reviews2_count";
 
@@ -33,7 +35,7 @@ class Reviews2Component extends Component
 
     public $securityEnabledRateLimit                = Cms::BOOL_Y;
     public $securityRateLimitRequests               = 10;
-    public $securityRateLimitTime                   = 3600;
+    public $securityRateLimitTime                   = 30600;
 
     public $messageSuccessBeforeApproval            = "Отзыв успешно добавлен, и будет опубликован на сайте после проверки модератора.";
     public $messageSuccess                          = "Отзыв успешно добавлен, спасибо.";
@@ -86,6 +88,7 @@ class Reviews2Component extends Component
             [['messageSuccess'], 'string'],
             [['notifyEmails'], 'safe'],
             [['notifyPhones'], 'safe'],
+            [['maxCountMessagesForUser'], 'integer'],
             [['enabledFieldsOnGuest'], 'safe'],
             [['enabledFieldsOnUser'], 'safe'],
             [['securityEnabledRateLimit'], 'string'],
@@ -114,6 +117,8 @@ class Reviews2Component extends Component
 
             'enabledFieldsOnGuest'                  => 'Поля в форме добавления отзыва (пользователь неавторизован)',
             'enabledFieldsOnUser'                   => 'Поля в форме добавления отзыва (пользователь авторизован)',
+
+            'maxCountMessagesForUser'               => 'Максимальное количество отзывов к одному посту от одного польозвателя (0 - неограничено)',
         ]);
     }
 

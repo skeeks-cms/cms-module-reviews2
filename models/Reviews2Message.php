@@ -127,6 +127,11 @@ class Reviews2Message extends \skeeks\cms\models\Core
             $ratingSumm = $ratingSumm + $message->rating;
         }
 
+        if (!$count)
+        {
+            return ;
+        }
+
         $ratingAll = ($ratingSumm / $count);
 
         if (\Yii::$app->reviews2->elementPropertyCountCode)

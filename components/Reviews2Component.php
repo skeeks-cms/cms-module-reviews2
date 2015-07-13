@@ -35,6 +35,12 @@ class Reviews2Component extends Component
     public $securityRateLimitRequests               = 10;
     public $securityRateLimitTime                   = 3600;
 
+    public $messageSuccessBeforeApproval            = "Отзыв успешно добавлен, и будет опубликован на сайте после проверки модератора.";
+    public $messageSuccess                          = "Отзыв успешно добавлен, спасибо.";
+
+    public $enabledFieldsOnUser                     = ['comments', 'dignity', 'disadvantages'];
+    public $enabledFieldsOnGuest                    = ['comments', 'user_email', 'user_name', 'dignity', 'disadvantages', 'verifyCode'];
+
     /**
      * Можно задать название и описание компонента
      * @return array
@@ -76,8 +82,12 @@ class Reviews2Component extends Component
             [['securityRateLimitTime'], 'integer'],
             [['elementPropertyRatingCode'], 'string'],
             [['elementPropertyCountCode'], 'string'],
+            [['messageSuccessBeforeApproval'], 'string'],
+            [['messageSuccess'], 'string'],
             [['notifyEmails'], 'safe'],
             [['notifyPhones'], 'safe'],
+            [['enabledFieldsOnGuest'], 'safe'],
+            [['enabledFieldsOnUser'], 'safe'],
             [['securityEnabledRateLimit'], 'string'],
             [['enabledBeforeApproval', 'securityEnabledRateLimit'], 'in', 'range' => array_keys(\Yii::$app->cms->booleanFormat())],
         ]);
@@ -98,6 +108,12 @@ class Reviews2Component extends Component
             'securityEnabledRateLimit'              => 'Включить защиту по IP',
             'securityRateLimitRequests'             => 'Максимальное количество отзывов',
             'securityRateLimitTime'                 => 'Время за которое будет размещено максимальное количество отзывов',
+
+            'messageSuccessBeforeApproval'          => 'Сообщение об успешно добавленном отзыве (если включена предмодерация)',
+            'messageSuccess'                        => 'Сообщение об успешно добавленном отзыве (без предмодерации)',
+
+            'enabledFieldsOnGuest'                  => 'Поля в форме добавления отзыва (пользователь неавторизован)',
+            'enabledFieldsOnUser'                   => 'Поля в форме добавления отзыва (пользователь авторизован)',
         ]);
     }
 

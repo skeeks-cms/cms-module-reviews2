@@ -9,11 +9,127 @@
 /* @var $widget \skeeks\cms\reviews2\widgets\reviews2\Reviews2Widget */
 
 $model = $widget->modelMessage;
+$pjaxId = $widget->id . "-pjax";
 ?>
 
 
+
+<? $form = \skeeks\cms\base\widgets\ActiveFormAjaxSubmit::begin([
+    'action'        => \skeeks\cms\helpers\UrlHelper::construct('/reviews2/backend/submit')->toString(),
+    'validationUrl' => \skeeks\cms\helpers\UrlHelper::construct('/reviews2/backend/submit')->enableAjaxValidateForm()->toString(),
+    'afterValidateCallback' => new \yii\web\JsExpression(<<<JS
+    function(jQueryForm, AjaxQuery)
+    {
+        var handler = new sx.classes.AjaxHandlerStandartRespose(AjaxQuery, {
+            'blockerSelector' : '#' + jQueryForm.attr('id'),
+            'enableBlocker' : true,
+        });
+
+        handler.bind('success', function(e, response)
+        {
+            jQueryForm.empty().append(response.message);
+            $.pjax.reload('#{$pjaxId}');
+        });
+
+
+    }
+JS
+)
+]); ?>
+
+    <?= $form->field($model, 'element_id')->hiddenInput([
+        'value' => $widget->cmsContentElement->id
+    ])->label(false); ?>
+
+    <?= $form->field($model, 'rating')->radioList(\Yii::$app->reviews2->ratings); ?>
+
+        <? if (\Yii::$app->user->isGuest) : ?>
+
+            <? if (in_array('user_name', \Yii::$app->reviews2->enabledFieldsOnGuest)): ?>
+                <?= $form->field($model, 'user_name')->textInput(); ?>
+            <? endif; ?>
+
+            <? if (in_array('user_email', \Yii::$app->reviews2->enabledFieldsOnGuest)): ?>
+                <?= $form->field($model, 'user_email')->hint('Email не будет опубликован публично')->textInput(); ?>
+            <? endif; ?>
+
+            <? if (in_array('comments', \Yii::$app->reviews2->enabledFieldsOnGuest)): ?>
+                <?= $form->field($model, 'comments')->textarea([
+                    'rows' => 5
+                ]); ?>
+            <? endif; ?>
+
+            <? if (in_array('dignity', \Yii::$app->reviews2->enabledFieldsOnGuest)): ?>
+                <?= $form->field($model, 'dignity')->textarea([
+                    'rows' => 5
+                ]); ?>
+            <? endif; ?>
+
+            <? if (in_array('disadvantages', \Yii::$app->reviews2->enabledFieldsOnGuest)): ?>
+                <?= $form->field($model, 'disadvantages')->textarea([
+                    'rows' => 5
+                ]); ?>
+            <? endif; ?>
+
+            <? if (in_array('verifyCode', \Yii::$app->reviews2->enabledFieldsOnGuest)): ?>
+                <?= $form->field($model, 'verifyCode')->widget(\yii\captcha\Captcha::className(), [
+                    'captchaAction' => '/cms/tools/captcha',
+                    'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
+                ]) ?>
+            <? endif; ?>
+
+        <? else: ?>
+
+            <? if (in_array('user_name', \Yii::$app->reviews2->enabledFieldsOnUser)): ?>
+                <?= $form->field($model, 'user_name')->textInput(); ?>
+            <? endif; ?>
+
+            <? if (in_array('user_email', \Yii::$app->reviews2->enabledFieldsOnUser)): ?>
+                <?= $form->field($model, 'user_email')->hint('Email не будет опубликован публично')->textInput(); ?>
+            <? endif; ?>
+
+            <? if (in_array('comments', \Yii::$app->reviews2->enabledFieldsOnUser)): ?>
+                <?= $form->field($model, 'comments')->textarea([
+                    'rows' => 5
+                ]); ?>
+            <? endif; ?>
+
+            <? if (in_array('dignity', \Yii::$app->reviews2->enabledFieldsOnUser)): ?>
+                <?= $form->field($model, 'dignity')->textarea([
+                    'rows' => 5
+                ]); ?>
+            <? endif; ?>
+
+            <? if (in_array('disadvantages', \Yii::$app->reviews2->enabledFieldsOnUser)): ?>
+                <?= $form->field($model, 'disadvantages')->textarea([
+                    'rows' => 5
+                ]); ?>
+            <? endif; ?>
+
+            <? if (in_array('verifyCode', \Yii::$app->reviews2->enabledFieldsOnUser)): ?>
+                <?= $form->field($model, 'verifyCode')->widget(\yii\captcha\Captcha::className(), [
+                    'captchaAction' => '/cms/tools/captcha',
+                    'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
+                ]) ?>
+            <? endif; ?>
+
+        <? endif; ?>
+
+
+    <?= \yii\helpers\Html::submitButton("" . \Yii::t('app', $widget->btnSubmit), [
+        'class' => $widget->btnSubmitClass,
+    ]); ?>
+
+<? \skeeks\cms\base\widgets\ActiveFormAjaxSubmit::end(); ?>
+
+
+<hr />
+
+
 <? if ($widget->enabledPjaxPagination == \skeeks\cms\components\Cms::BOOL_Y) : ?>
-    <? \skeeks\cms\modules\admin\widgets\Pjax::begin(); ?>
+    <? \skeeks\cms\modules\admin\widgets\Pjax::begin([
+        'id'        => $pjaxId,
+    ]); ?>
 <? endif; ?>
 
     <? echo \yii\widgets\ListView::widget([
@@ -33,29 +149,3 @@ $model = $widget->modelMessage;
 <? if ($widget->enabledPjaxPagination == \skeeks\cms\components\Cms::BOOL_Y) : ?>
     <? \skeeks\cms\modules\admin\widgets\Pjax::end(); ?>
 <? endif; ?>
-
-
-<? $form = \skeeks\cms\base\widgets\ActiveFormAjaxSubmit::begin([
-    'action'        => \skeeks\cms\helpers\UrlHelper::construct('/reviews2/backend/submit')->toString(),
-    'validationUrl' => \skeeks\cms\helpers\UrlHelper::construct('/reviews2/backend/submit')->enableAjaxValidateForm()->toString()
-]); ?>
-
-    <?= $form->field($model, 'element_id')->hiddenInput([
-        'value' => $widget->cmsContentElement->id
-    ])->label(false); ?>
-
-    <? if (\Yii::$app->user->isGuest) : ?>
-        <?= $form->field($model, 'user_name')->textInput(); ?>
-        <?= $form->field($model, 'user_email')->hint('Email не будет опубликован публично')->textInput(); ?>
-    <? endif; ?>
-    <?= $form->field($model, 'rating')->radioList(\Yii::$app->reviews2->ratings); ?>
-    <?= $form->field($model, 'comments')->textarea([
-        'rows' => 5
-    ]); ?>
-
-
-    <?= \yii\helpers\Html::submitButton("" . \Yii::t('app', $widget->btnSubmit), [
-        'class' => $widget->btnSubmitClass,
-    ]); ?>
-
-<? \skeeks\cms\base\widgets\ActiveFormAjaxSubmit::end(); ?>

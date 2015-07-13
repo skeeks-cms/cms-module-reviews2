@@ -55,6 +55,13 @@ if ($model->isNewRecord !== null)
             'id',
             'displayName'
         )); ?>
+
+    <?= $form->field($model, 'published_at')->widget(\kartik\datecontrol\DateControl::classname(), [
+        //'displayFormat' => 'php:d-M-Y H:i:s',
+        'type' => \kartik\datecontrol\DateControl::FORMAT_DATETIME,
+    ]); ?>
+
+
 <?= $form->fieldSetEnd(); ?>
 
 <?= $form->fieldSet('Дополнительная информация'); ?>

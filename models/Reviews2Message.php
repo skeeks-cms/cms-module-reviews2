@@ -4,11 +4,15 @@ namespace skeeks\cms\reviews2\models;
 
 use skeeks\cms\helpers\Request;
 use skeeks\cms\models\behaviors\Serialize;
+use skeeks\cms\models\behaviors\TimestampPublishedBehavior;
+use skeeks\cms\models\CmsContent;
 use skeeks\cms\models\CmsContentElement;
 use skeeks\cms\models\CmsSite;
 use skeeks\cms\models\CmsUser;
 use skeeks\cms\models\User;
 use Yii;
+use yii\db\BaseActiveRecord;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%reviews2_message}}".
@@ -51,6 +55,11 @@ use Yii;
  */
 class Reviews2Message extends \skeeks\cms\models\Core
 {
+    public $verifyCode;
+
+    //Сценарий вставки отзыва с сайтовой части + captcha
+    const SCENARIO_SITE_INSERT = 'siteInsert';
+
     const STATUS_NEW            = 0;
     const STATUS_PROCESSED      = 5;
     const STATUS_ALLOWED        = 10;
@@ -74,12 +83,80 @@ class Reviews2Message extends \skeeks\cms\models\Core
     }
 
     /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+
+        $this->on(BaseActiveRecord::EVENT_AFTER_INSERT,    [$this, "checkDataAfterSave"]);
+        $this->on(BaseActiveRecord::EVENT_AFTER_UPDATE,    [$this, "checkDataAfterSave"]);
+    }
+
+    /**
+     * После сохранения или обновления рейтинга, нужно обновить элемент.
+     *
+     * @throws \skeeks\cms\relatedProperties\models\InvalidParamException
+     */
+    public function checkDataAfterSave()
+    {
+        if (!$this->element)
+        {
+            return;
+        }
+
+        $relatedPropertiesModel = $this->element->relatedPropertiesModel;
+
+        if (!$relatedPropertiesModel)
+        {
+            return;
+        }
+
+        //Выбор всех отзывов принятых к этому элементу, для рассчета рейтинга.
+        $messages   = static::find()->where(['element_id' => $this->element->id])->andWhere(['status' => static::STATUS_ALLOWED])->all();
+
+        $count              = 0;
+        $ratingSumm         = 0;
+
+        /**
+         * @var self $message
+         */
+        foreach ($messages as $message)
+        {
+            $count ++;
+            $ratingSumm = $ratingSumm + $message->rating;
+        }
+
+        $ratingAll = ($ratingSumm / $count);
+
+        if (\Yii::$app->reviews2->elementPropertyCountCode)
+        {
+            if ($relatedPropertiesModel->hasAttribute(\Yii::$app->reviews2->elementPropertyCountCode))
+            {
+                $relatedPropertiesModel->setAttribute(\Yii::$app->reviews2->elementPropertyCountCode, $count);
+            }
+        }
+
+        if (\Yii::$app->reviews2->elementPropertyRatingCode)
+        {
+            if ($relatedPropertiesModel->hasAttribute(\Yii::$app->reviews2->elementPropertyRatingCode))
+            {
+                $relatedPropertiesModel->setAttribute(\Yii::$app->reviews2->elementPropertyRatingCode, $ratingAll);
+            }
+        }
+
+        $relatedPropertiesModel->save();
+    }
+
+
+    /**
      * @return array
      */
     public function behaviors()
     {
         return array_merge(parent::behaviors(), [
 
+            TimestampPublishedBehavior::className() => TimestampPublishedBehavior::className(),
             Serialize::className() =>
             [
                 'class' => Serialize::className(),
@@ -89,6 +166,17 @@ class Reviews2Message extends \skeeks\cms\models\Core
         ]);
     }
 
+    /**
+     * @return array
+     */
+    public function scenarios()
+    {
+        $result                                 = parent::scenarios();
+        $result[self::SCENARIO_SITE_INSERT]     = ArrayHelper::merge($result[self::SCENARIO_DEFAULT], [
+            'verifyCode'
+        ]);
+        return $result;
+    }
     /**
      * @inheritdoc
      */
@@ -127,8 +215,32 @@ class Reviews2Message extends \skeeks\cms\models\Core
                 return $model->element->cmsContent->id;
             }],
             ['ip', 'default', 'value' => Request::getRealUserIp()],
+
+            [
+                'verifyCode',
+                'captcha',
+                'captchaAction' => '/cms/tools/captcha',
+                'skipOnEmpty'   =>  $this->_skipOnEmptyVerifyCode(),
+                'on'            => self::SCENARIO_SITE_INSERT
+            ],
         ];
     }
+
+    protected function _skipOnEmptyVerifyCode()
+    {
+        if (\Yii::$app->user->isGuest && in_array('verifyCode', \Yii::$app->reviews2->enabledFieldsOnGuest))
+        {
+            return false;
+        }
+
+        if (!\Yii::$app->user->isGuest && in_array('verifyCode', \Yii::$app->reviews2->enabledFieldsOnUser))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
 
     /**
      * @inheritdoc
@@ -141,7 +253,7 @@ class Reviews2Message extends \skeeks\cms\models\Core
             'updated_by' => Yii::t('app', 'Updated By'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
-            'published_at' => Yii::t('app', 'Published At'),
+            'published_at' => Yii::t('app', 'Время публикации'),
             'element_id' => Yii::t('app', 'Element ID'),
             'content_id' => Yii::t('app', 'Content ID'),
             'dignity' => Yii::t('app', 'Достоинства'),
@@ -158,10 +270,11 @@ class Reviews2Message extends \skeeks\cms\models\Core
             'site_code' => Yii::t('app', 'Site Code'),
             'user_name' => Yii::t('app', 'Имя'),
             'user_email' => Yii::t('app', 'Email'),
-            'user_phone' => Yii::t('app', 'User Phone'),
-            'user_city' => Yii::t('app', 'User City'),
+            'user_phone' => Yii::t('app', 'Phone'),
+            'user_city' => Yii::t('app', 'City'),
             'processed_at' => Yii::t('app', 'Когда обратали'),
             'processed_by' => Yii::t('app', 'Кто обработал'),
+            'verifyCode' => Yii::t('app', 'Verification Code'),
         ];
     }
 

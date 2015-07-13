@@ -9,13 +9,29 @@
 use skeeks\cms\modules\admin\widgets\form\ActiveFormUseTab as ActiveForm;
 ?>
 <?php $form = ActiveForm::begin(); ?>
-    <?= $form->fieldSet('Настройки'); ?>
 
-        <?= $form->fieldSelect($model, 'form_id', \yii\helpers\ArrayHelper::map(
-            \skeeks\modules\cms\form2\models\Form2Form::find()->all(),
-            'id',
-            'name'
-        )); ?>
+    <?= $form->fieldSet('Отображение'); ?>
+        <?= $form->field($model, 'viewFile')->textInput(); ?>
+    <?= $form->fieldSetEnd(); ?>
+
+    <?= $form->fieldSet('Постраничная навигация'); ?>
+        <?= $form->fieldRadioListBoolean($model, 'enabledPaging', \Yii::$app->cms->booleanFormat()); ?>
+        <?= $form->fieldRadioListBoolean($model, 'enabledPjaxPagination', \Yii::$app->cms->booleanFormat()); ?>
+        <?= $form->fieldInputInt($model, 'pageSize'); ?>
+        <?= $form->field($model, 'pageParamName')->textInput(); ?>
+
+    <?= $form->fieldSetEnd(); ?>
+
+    <?= $form->fieldSet('Сортировка и количество'); ?>
+        <?= $form->fieldInputInt($model, 'limit'); ?>
+        <?= $form->fieldSelect($model, 'orderBy', (new \skeeks\cms\reviews2\models\Reviews2Message())->attributeLabels()); ?>
+        <?= $form->fieldSelect($model, 'order', [
+            SORT_ASC    => "ASC (от меньшего к большему)",
+            SORT_DESC   => "DESC (от большего к меньшему)",
+        ]); ?>
+    <?= $form->fieldSetEnd(); ?>
+
+    <?= $form->fieldSet('Настройки'); ?>
 
         <?= $form->field($model, 'btnSubmit')->textInput(); ?>
         <?= $form->field($model, 'btnSubmitClass')->textInput(); ?>

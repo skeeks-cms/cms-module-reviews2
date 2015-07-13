@@ -123,12 +123,6 @@ class Reviews2Widget extends WidgetRenderable
 
     protected function _run()
     {
-        if (!$this->cmsContentElement)
-        {
-            return "Не передан обязательный параметр 'cmsContentElement'";
-        }
-
-
         $this->initDataProvider();
 
         if ($this->createdBy)
@@ -146,6 +140,10 @@ class Reviews2Widget extends WidgetRenderable
             $this->dataProvider->query->andWhere([Reviews2Message::tableName() . '.status' => $this->statuses]);
         }
 
+        if ($this->cmsContentElement)
+        {
+            $this->dataProvider->query->andWhere([Reviews2Message::tableName() . '.element_id' => $this->cmsContentElement->id]);
+        }
 
         if ($this->limit)
         {

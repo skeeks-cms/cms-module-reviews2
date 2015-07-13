@@ -7,6 +7,7 @@
  */
 namespace skeeks\cms\reviews2\controllers;
 
+use skeeks\cms\components\Cms;
 use skeeks\cms\helpers\RequestResponse;
 use skeeks\cms\modules\admin\actions\modelEditor\AdminOneModelEditAction;
 use skeeks\cms\modules\admin\actions\modelEditor\ModelEditorGridAction;
@@ -35,11 +36,24 @@ class BackendController extends Controller
 
         if ($rr->isRequestAjaxPost())
         {
+            $model->scenario = Reviews2Message::SCENARIO_SITE_INSERT;
+
             $model->page_url    = \Yii::$app->request->referrer;
             if ($model->load(\Yii::$app->request->post()) && $model->save())
             {
                 $rr->success = true;
-                $rr->message = "Отзыв успешно добавлен";
+
+                if (\Yii::$app->reviews2->enabledBeforeApproval == Cms::BOOL_Y)
+                {
+                    $rr->message = \Yii::$app->reviews2->messageSuccessBeforeApproval;
+                } else
+                {
+                    $rr->message        = \Yii::$app->reviews2->messageSuccess;
+
+                    //Отключена предмодерация, сразу публикуем
+                    $model->status      = Reviews2Message::STATUS_ALLOWED;
+                    $model->save();
+                }
             } else
             {
                 $rr->success = false;

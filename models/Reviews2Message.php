@@ -2,6 +2,7 @@
 
 namespace skeeks\cms\reviews2\models;
 
+use skeeks\cms\captcha\CaptchaValidator;
 use skeeks\cms\helpers\Request;
 use skeeks\cms\models\behaviors\Serialize;
 use skeeks\cms\models\behaviors\TimestampPublishedBehavior;
@@ -223,8 +224,7 @@ class Reviews2Message extends \skeeks\cms\models\Core
 
             [
                 'verifyCode',
-                'captcha',
-                'captchaAction' => '/cms/tools/captcha',
+                CaptchaValidator::className(),
                 'skipOnEmpty'   =>  $this->_skipOnEmptyVerifyCode(),
                 'on'            => self::SCENARIO_SITE_INSERT
             ],

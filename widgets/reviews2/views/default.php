@@ -31,6 +31,11 @@ $pjaxId = $widget->id . "-pjax";
             $.pjax.reload('#{$pjaxId}');
         });
 
+        handler.bind('error', function(e, response)
+        {
+            $('.sx-captcha-wrapper img', jQueryForm).click();
+        });
+
 
     }
 JS
@@ -42,7 +47,7 @@ JS
     ])->label(false); ?>
 
 
-    <?= $form->field($model, 'rating')->widget(\kartik\rating\StarRating::classname(), [
+    <?/*= $form->field($model, 'rating')->widget(\kartik\rating\StarRating::classname(), [
         'pluginOptions' => [
             'size' => 'lg',
             'step' => 1,
@@ -57,8 +62,8 @@ JS
                 5 => 'Отлично',
             ]
         ]
-    ]);?>
-    <?/*= $form->field($model, 'rating')->radioList(\Yii::$app->reviews2->ratings); */?>
+    ]);*/?>
+    <?= $form->field($model, 'rating')->radioList(\Yii::$app->reviews2->ratings); ?>
 
         <? if (\Yii::$app->user->isGuest) : ?>
 
@@ -89,10 +94,7 @@ JS
             <? endif; ?>
 
             <? if (in_array('verifyCode', \Yii::$app->reviews2->enabledFieldsOnGuest)): ?>
-                <?= $form->field($model, 'verifyCode')->widget(\yii\captcha\Captcha::className(), [
-                    'captchaAction' => '/cms/tools/captcha',
-                    'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
-                ]) ?>
+                <?= $form->field($model, 'verifyCode')->widget(\skeeks\cms\captcha\Captcha::className()) ?>
             <? endif; ?>
 
         <? else: ?>
@@ -124,10 +126,7 @@ JS
             <? endif; ?>
 
             <? if (in_array('verifyCode', \Yii::$app->reviews2->enabledFieldsOnUser)): ?>
-                <?= $form->field($model, 'verifyCode')->widget(\yii\captcha\Captcha::className(), [
-                    'captchaAction' => '/cms/tools/captcha',
-                    'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
-                ]) ?>
+                <?= $form->field($model, 'verifyCode')->widget(\skeeks\cms\captcha\Captcha::className()) ?>
             <? endif; ?>
 
         <? endif; ?>

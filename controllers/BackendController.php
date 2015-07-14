@@ -119,14 +119,15 @@ class BackendController extends Controller
                     $model->notifyCreate();
                 } else
                 {
+
                     $rr->success = false;
-                    $rr->message = "Отзыв не добавлен";
+                    $rr->message = "Отзыв не добавлен: " . implode(",", $model->getFirstErrors());
                 }
 
             } else
             {
                 $rr->success = false;
-                $rr->message = "Отзыв не добавлен";
+                $rr->message = "Отзыв не добавлен: " . implode(",", $model->getFirstErrors());
             }
         }
 

@@ -8,6 +8,17 @@
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
+
+
+$controll = [
+    'class'         => \skeeks\cms\modules\admin\grid\ActionColumn::className(),
+    'controller'    => $controller
+];
+
+if ($isOpenNewWindow)
+{
+    $controll['isOpenNewWindow'] = true;
+}
 ?>
 
 <?= \skeeks\cms\modules\admin\widgets\GridViewHasSettings::widget([
@@ -16,10 +27,7 @@
     'columns' => [
         ['class' => 'yii\grid\SerialColumn'],
 
-        [
-            'class'         => \skeeks\cms\modules\admin\grid\ActionColumn::className(),
-            'controller'    => $controller
-        ],
+        $controll,
 
         [
             'attribute' => 'status',

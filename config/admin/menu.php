@@ -10,14 +10,14 @@ return [
     'reviews2' =>
     [
         'label'     => 'Отзывы',
-        //"img"       => ['\skeeks\modules\cms\form2\assets\FormAsset', 'icons/forms.png'],
+        "img"       => ['\skeeks\cms\reviews2\assets\Reviews2Asset', 'icons/reviews.jpg'],
 
         'items' =>
         [
             [
                 "label" => "Отзывы",
                 "url"   => ["reviews2/admin-message"],
-                //"img"       => ['\skeeks\modules\cms\form2\assets\FormAsset', 'icons/forms.png'],
+                "img"       => ['\skeeks\cms\reviews2\assets\Reviews2Asset', 'icons/reviews.jpg'],
             ],
         ]
     ]

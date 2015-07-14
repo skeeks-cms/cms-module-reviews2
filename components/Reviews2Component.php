@@ -12,6 +12,7 @@ use skeeks\cms\controllers\AdminCmsContentElementController;
 use skeeks\cms\modules\admin\actions\modelEditor\AdminOneModelFilesAction;
 use skeeks\cms\modules\admin\controllers\AdminController;
 use skeeks\cms\modules\admin\controllers\events\AdminInitEvent;
+use skeeks\cms\reviews2\actions\AdminOneModelMessagesAction;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -65,7 +66,7 @@ class Reviews2Component extends Component
                 $e->controller->eventActions = ArrayHelper::merge($e->controller->eventActions, [
                     'reviews2' =>
                         [
-                            'class'         => AdminOneModelFilesAction::className(),
+                            'class'         => AdminOneModelMessagesAction::className(),
                             'name'          => 'Отзывы',
                             'priority'      => 1000,
                         ],

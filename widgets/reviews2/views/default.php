@@ -41,7 +41,24 @@ JS
         'value' => $widget->cmsContentElement->id
     ])->label(false); ?>
 
-    <?= $form->field($model, 'rating')->radioList(\Yii::$app->reviews2->ratings); ?>
+
+    <?= $form->field($model, 'rating')->widget(\kartik\rating\StarRating::classname(), [
+        'pluginOptions' => [
+            'size' => 'lg',
+            'step' => 1,
+            'clearCaption' => 'Не выбрано',
+            'showClear' => false,
+            'starCaptions' =>
+            [
+                1 => 'Очень плохо',
+                2 => 'Плохо',
+                3 => 'Нормально',
+                4 => 'Хорошо',
+                5 => 'Отлично',
+            ]
+        ]
+    ]);?>
+    <?/*= $form->field($model, 'rating')->radioList(\Yii::$app->reviews2->ratings); */?>
 
         <? if (\Yii::$app->user->isGuest) : ?>
 

@@ -64,7 +64,7 @@ class BackendController extends Controller
                         if ($messagesFind->count() >= \Yii::$app->reviews2->maxCountMessagesForUser)
                         {
                             $rr->success = false;
-                            $rr->message = "Отзыв уже добавлен ранее.";
+                            $rr->message = "Вы уже добавляли отзыв к этой записи ранее.";
 
                             return $rr;
                         }
@@ -115,6 +115,8 @@ class BackendController extends Controller
                         $model->status      = Reviews2Message::STATUS_ALLOWED;
                         $model->save();
                     }
+
+                    $model->notifyCreate();
                 } else
                 {
                     $rr->success = false;

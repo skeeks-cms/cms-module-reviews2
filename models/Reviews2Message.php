@@ -191,7 +191,7 @@ class Reviews2Message extends \skeeks\cms\models\Core
             [['created_by', 'updated_by', 'created_at', 'updated_at', 'element_id', 'content_id', 'status'], 'integer'],
             [['element_id', 'rating'], 'required'],
             [['dignity', 'disadvantages', 'comments'], 'string'],
-            [['rating'], 'integer', 'max' => (int) \Yii::$app->reviews2->maxValue],
+            [['rating'], 'integer', 'min' => 1, 'max' => (int) \Yii::$app->reviews2->maxValue],
             [['ip'], 'string', 'max' => 32],
             [['page_url'], 'string'],
             [['site_code'], 'string', 'max' => 15],
@@ -337,5 +337,28 @@ class Reviews2Message extends \skeeks\cms\models\Core
     public function getUpdatedBy()
     {
         return $this->hasOne(CmsUser::className(), ['id' => 'updated_by']);
+    }
+
+
+
+
+    /**
+     * Уведомить всех кого надо и как надо
+     */
+    public function notifyCreate()
+    {
+        if (\Yii::$app->reviews2->notifyEmails)
+        {
+            foreach (\Yii::$app->reviews2->notifyEmails as $email)
+            {
+                \Yii::$app->mailer->compose('@skeeks/cms/reviews2/mail/new-message', [
+                    'model'          => $this
+                ])
+                ->setFrom([\Yii::$app->cms->adminEmail => \Yii::$app->cms->appName])
+                ->setTo($email)
+                ->setSubject("Добавлен новый отзыв #" . $this->id)
+                ->send();
+            }
+        }
     }
 }

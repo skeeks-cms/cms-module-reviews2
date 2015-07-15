@@ -46,7 +46,16 @@ class BackendController extends Controller
                     $messagesFind = Reviews2Message::find();
                     if (\Yii::$app->user->isGuest)
                     {
-                        $messagesFind->andWhere(['ip' => Request::getRealUserIp()]);
+                        $messagesFind
+                            ->andWhere([
+                                'ip' => Request::getRealUserIp()
+                            ])
+                            ->andWhere([
+                                'or',
+                                ['created_by' => null],
+                                ['created_by' => ''],
+                            ])
+                        ;
                     } else
                     {
                         $messagesFind->andWhere(['created_by' => \Yii::$app->user->identity->id]);

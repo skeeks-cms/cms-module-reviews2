@@ -8,27 +8,14 @@
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-
-
-$controll = [
-    'class'         => \skeeks\cms\modules\admin\grid\ActionColumn::className(),
-    'controller'    => $controller
-];
-
-if ($isOpenNewWindow)
-{
-    $controll['isOpenNewWindow'] = true;
-}
 ?>
 
-<?= \skeeks\cms\modules\admin\widgets\GridViewHasSettings::widget([
-    'dataProvider'  => $dataProvider,
-    'filterModel'   => $searchModel,
+<?= \skeeks\cms\modules\admin\widgets\GridViewStandart::widget([
+    'dataProvider'      => $dataProvider,
+    'filterModel'       => $searchModel,
+    'adminController'   => $controller,
+    'isOpenNewWindow'   => $isOpenNewWindow ? true : false,
     'columns' => [
-        ['class' => 'yii\grid\SerialColumn'],
-
-        $controll,
-
         [
             'attribute' => 'status',
             'class' => \yii\grid\DataColumn::className(),

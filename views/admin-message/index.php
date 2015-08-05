@@ -65,14 +65,11 @@
         ],
 
         [
-            'filter' => false,
             'attribute' => 'element_id',
-            'class' => \yii\grid\DataColumn::className(),
-            'value' => function(\skeeks\cms\reviews2\models\Reviews2Message $model)
-            {
-                return $model->element->name;
-            }
+            'relation' => 'element',
+            'class' => \skeeks\cms\grid\CmsContentElementColumn::className(),
         ],
+
         [
             'filter' => \yii\helpers\ArrayHelper::map(
                 \skeeks\cms\models\CmsContent::find()->all(),

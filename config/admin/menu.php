@@ -7,11 +7,8 @@
  */
 return [
 
-    'reviews2' =>
+    'other' =>
     [
-        'label'     => 'Отзывы',
-        "img"       => ['\skeeks\cms\reviews2\assets\Reviews2Asset', 'icons/reviews.jpg'],
-
         'items' =>
         [
             [

@@ -12,9 +12,24 @@ return [
         'items' =>
         [
             [
-                "label" => "Отзывы",
-                "url"   => ["reviews2/admin-message"],
+                "label"     => "Отзывы",
                 "img"       => ['\skeeks\cms\reviews2\assets\Reviews2Asset', 'icons/reviews.jpg'],
+
+                'items' =>
+                [
+                    [
+                        "label" => "Отзывы",
+                        "url"   => ["reviews2/admin-message"],
+                        "img"       => ['\skeeks\cms\reviews2\assets\Reviews2Asset', 'icons/reviews.jpg'],
+                    ],
+
+                    [
+                        "label" => "Настройки",
+                        "url"   => ["cms/admin-settings", "component" => 'skeeks\cms\reviews2\components\Reviews2Component'],
+                        "img"       => ['\skeeks\cms\modules\admin\assets\AdminAsset', 'images/icons/settings.png'],
+                    ],
+
+                ]
             ],
         ]
     ]

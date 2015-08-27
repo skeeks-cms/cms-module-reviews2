@@ -23,6 +23,8 @@ use yii\helpers\ArrayHelper;
  */
 class Reviews2Component extends Component
 {
+    const PERMISSION_ADD_REVIEW                     = 'reviews2.add.review';
+
     public $enabledBeforeApproval                   = Cms::BOOL_Y;
     public $maxValue                                = 5;
 

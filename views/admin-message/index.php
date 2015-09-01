@@ -51,17 +51,7 @@
         ],
 
         [
-            'attribute' => 'site_code',
-            'class' => \yii\grid\DataColumn::className(),
-            'filter' => \yii\helpers\ArrayHelper::map(
-                \skeeks\cms\models\CmsSite::find()->all(),
-                'code',
-                'name'
-            ),
-            'value' => function(\skeeks\cms\reviews2\models\Reviews2Message $model)
-            {
-                return $model->site->name;
-            }
+            'class' => \skeeks\cms\grid\SiteColumn::className(),
         ],
 
         [

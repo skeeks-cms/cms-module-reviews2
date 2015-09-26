@@ -58,7 +58,7 @@ use skeeks\cms\modules\admin\widgets\form\ActiveFormUseTab as ActiveForm;
             [
                 'controllerRoute' => 'cms/admin-user-email',
                 'items' => \yii\helpers\ArrayHelper::map(
-                    \skeeks\cms\models\user\UserEmail::find()->all(),
+                    \skeeks\cms\models\CmsUserEmail::find()->all(),
                     'value',
                     'value'
                 ),
@@ -70,7 +70,7 @@ use skeeks\cms\modules\admin\widgets\form\ActiveFormUseTab as ActiveForm;
             [
             'controllerRoute' => 'cms/admin-user-phone',
             'items' => \yii\helpers\ArrayHelper::map(
-                \skeeks\cms\models\user\UserPhone::find()->all(),
+                \skeeks\cms\models\CmsUserPhone::find()->all(),
                 'value',
                 'value'
             ),

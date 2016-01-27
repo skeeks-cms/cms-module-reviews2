@@ -4,10 +4,8 @@ use yii\helpers\Html;
 use skeeks\cms\modules\admin\widgets\form\ActiveFormUseTab as ActiveForm;
 /* @var $this yii\web\View */
 /* @var $action \skeeks\cms\modules\admin\actions\modelEditor\AdminOneModelEditAction */
-/* @var $model \skeeks\modules\cms\form2\models\Form2FormSend */
-$model = $action->controller->model;
-
-if ($model->isNewRecord !== null)
+/* @var $model \skeeks\cms\reviews2\models\Reviews2Message */
+if (!$model->isNewRecord)
 {
     if ($model->status == \skeeks\cms\reviews2\models\Reviews2Message::STATUS_NEW && !$model->processed_by)
     {
@@ -18,16 +16,17 @@ if ($model->isNewRecord !== null)
         $model->save();
     }
 }
-
-
 ?>
 
 <? $form = ActiveForm::begin(); ?>
 
 <?= $form->fieldSet('Основная информация'); ?>
 
+    <?= $form->field($model, 'element_id')->widget(
+        \skeeks\cms\modules\admin\widgets\formInputs\CmsContentElementInput::className()
+    ); ?>
 
-    <?= $form->fieldSelect($model, 'rating', \Yii::$app->reviews2->ratings); ?>
+    <?= $form->field($model, 'rating')->radioList(\Yii::$app->reviews2->ratings); ?>
     <?= $form->field($model, 'comments')->textarea(['rows' => 5]); ?>
     <?= $form->field($model, 'dignity')->textarea(['rows' => 5]); ?>
     <?= $form->field($model, 'disadvantages')->textarea(['rows' => 5]); ?>
@@ -64,100 +63,101 @@ if ($model->isNewRecord !== null)
 
 <?= $form->fieldSetEnd(); ?>
 
-<?= $form->fieldSet('Дополнительная информация'); ?>
-    <?= \yii\widgets\DetailView::widget([
-        'model'         => $model,
-        'attributes'    =>
-        [
+<? if (!$model->isNewRecord) : ?>
+    <?= $form->fieldSet('Дополнительная информация'); ?>
+        <?= \yii\widgets\DetailView::widget([
+            'model'         => $model,
+            'attributes'    =>
             [
-                'attribute'     => 'id',
-                'label'         => 'Номер сообщения',
-            ],
+                [
+                    'attribute'     => 'id',
+                    'label'         => 'Номер сообщения',
+                ],
 
+                [
+                    'attribute' => 'created_at',
+                    'value' => \Yii::$app->formatter->asDatetime($model->created_at, 'medium') . "(" . \Yii::$app->formatter->asRelativeTime($model->created_at) . ")",
+                ],
+
+                [
+                    'format' => 'raw',
+                    'label' => 'Отправлено с сайта',
+                    'value' => "<a href=\"{$model->site->url}\" target=\"_blank\" data-pjax=\"0\">{$model->site->name}</a>",
+                ],
+
+                [
+                    'format' => 'raw',
+                    'label' => 'Отправил пользователь',
+                    'value' => "{$model->createdBy->displayName}",
+                ],
+
+                [
+                    'attribute' => 'ip',
+                    'label' => 'Ip адрес отправителя',
+                ],
+
+                [
+                    'attribute' => 'page_url',
+                    'format' => 'raw',
+                    'label' => 'Отправлена со страницы',
+                    'value' => Html::a($model->page_url, $model->page_url, [
+                        'target' => '_blank',
+                        'data-pjax' => 0
+                    ])
+                ],
+            ]
+        ]); ?>
+
+    <?= $form->fieldSetEnd(); ?>
+
+
+
+    <?= $form->fieldSet('Для разработчиков'); ?>
+
+    <div class="sx-block">
+      <h3>Дополнительные данные, которые могут пригодиться в некоторых случаях, разработчикам.</h3>
+      <small>Для удобства просмотра данных, можно воспользоваться сервисом: <a href="http://jsonformatter.curiousconcept.com/#" target="_blank">http://jsonformatter.curiousconcept.com/#</a></small>
+    </div>
+    <hr />
+
+
+        <?= \yii\widgets\DetailView::widget([
+            'model'         => $model,
+            'attributes'    =>
             [
-                'attribute' => 'created_at',
-                'value' => \Yii::$app->formatter->asDatetime($model->created_at, 'medium') . "(" . \Yii::$app->formatter->asRelativeTime($model->created_at) . ")",
-            ],
+                [
+                    'attribute' => 'data_server',
+                    'format' => 'raw',
+                    'label' => 'SERVER',
+                    'value' => "<textarea class='form-control' rows=\"10\">" . \yii\helpers\Json::encode($model->data_server) . "</textarea>"
+                ],
 
-            [
-                'format' => 'raw',
-                'label' => 'Отправлено с сайта',
-                'value' => "<a href=\"{$model->site->url}\" target=\"_blank\" data-pjax=\"0\">{$model->site->name}</a>",
-            ],
+                [
+                    'attribute' => 'data_cookie',
+                    'format' => 'raw',
+                    'label' => 'COOKIE',
+                    'value' => "<textarea class='form-control' rows=\"5\">" . \yii\helpers\Json::encode($model->data_cookie) . "</textarea>"
+                ],
 
-            [
-                'format' => 'raw',
-                'label' => 'Отправил пользователь',
-                'value' => "{$model->createdBy->displayName}",
-            ],
+                [
+                    'attribute' => 'data_session',
+                    'format' => 'raw',
+                    'label' => 'SESSION',
+                    'value' => "<textarea class='form-control' rows=\"5\">" . \yii\helpers\Json::encode($model->data_session) . "</textarea>"
+                ],
 
-            [
-                'attribute' => 'ip',
-                'label' => 'Ip адрес отправителя',
-            ],
+                [
+                    'attribute' => 'data_request',
+                    'format' => 'raw',
+                    'label' => 'REQUEST',
+                    'value' => "<textarea class='form-control' rows=\"10\">" . \yii\helpers\Json::encode($model->data_request) . "</textarea>"
+                ],
 
-            [
-                'attribute' => 'page_url',
-                'format' => 'raw',
-                'label' => 'Отправлена со страницы',
-                'value' => Html::a($model->page_url, $model->page_url, [
-                    'target' => '_blank',
-                    'data-pjax' => 0
-                ])
-            ],
-        ]
-    ]); ?>
+            ]
+        ]); ?>
 
-<?= $form->fieldSetEnd(); ?>
-
-
-
-<?= $form->fieldSet('Для разработчиков'); ?>
-
-<div class="sx-block">
-  <h3>Дополнительные данные, которые могут пригодиться в некоторых случаях, разработчикам.</h3>
-  <small>Для удобства просмотра данных, можно воспользоваться сервисом: <a href="http://jsonformatter.curiousconcept.com/#" target="_blank">http://jsonformatter.curiousconcept.com/#</a></small>
-</div>
-<hr />
-
-
-    <?= \yii\widgets\DetailView::widget([
-        'model'         => $model,
-        'attributes'    =>
-        [
-            [
-                'attribute' => 'data_server',
-                'format' => 'raw',
-                'label' => 'SERVER',
-                'value' => "<textarea class='form-control' rows=\"10\">" . \yii\helpers\Json::encode($model->data_server) . "</textarea>"
-            ],
-
-            [
-                'attribute' => 'data_cookie',
-                'format' => 'raw',
-                'label' => 'COOKIE',
-                'value' => "<textarea class='form-control' rows=\"5\">" . \yii\helpers\Json::encode($model->data_cookie) . "</textarea>"
-            ],
-
-            [
-                'attribute' => 'data_session',
-                'format' => 'raw',
-                'label' => 'SESSION',
-                'value' => "<textarea class='form-control' rows=\"5\">" . \yii\helpers\Json::encode($model->data_session) . "</textarea>"
-            ],
-
-            [
-                'attribute' => 'data_request',
-                'format' => 'raw',
-                'label' => 'REQUEST',
-                'value' => "<textarea class='form-control' rows=\"10\">" . \yii\helpers\Json::encode($model->data_request) . "</textarea>"
-            ],
-
-        ]
-    ]); ?>
-
-<?= $form->fieldSetEnd(); ?>
-
+    <?= $form->fieldSetEnd(); ?>
+<? endif; ?>
 <?= $form->buttonsStandart($model); ?>
 
 <? ActiveForm::end(); ?>

@@ -92,8 +92,23 @@ class Reviews2Message extends \skeeks\cms\models\Core
 
         $this->on(BaseActiveRecord::EVENT_AFTER_INSERT,    [$this, "checkDataAfterSave"]);
         $this->on(BaseActiveRecord::EVENT_AFTER_UPDATE,    [$this, "checkDataAfterSave"]);
+
+        $this->on(BaseActiveRecord::EVENT_BEFORE_INSERT,    [$this, "checkDataBeforeSave"]);
+        $this->on(BaseActiveRecord::EVENT_BEFORE_UPDATE,    [$this, "checkDataBeforeSave"]);
     }
 
+    /**
+     * После сохранения или обновления рейтинга, нужно обновить элемент.
+     *
+     * @throws \skeeks\cms\relatedProperties\models\InvalidParamException
+     */
+    public function checkDataBeforeSave()
+    {
+        if ($this->element)
+        {
+            $this->content_id = $this->element->cmsContent->id;
+        }
+    }
     /**
      * После сохранения или обновления рейтинга, нужно обновить элемент.
      *

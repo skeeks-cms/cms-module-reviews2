@@ -61,11 +61,7 @@
         ],
 
         [
-            'filter' => \yii\helpers\ArrayHelper::map(
-                \skeeks\cms\models\CmsContent::find()->all(),
-                'id',
-                'name'
-            ),
+            'filter' => \skeeks\cms\models\CmsContent::getDataForSelect(),
             'attribute' => 'content_id',
             'class' => \yii\grid\DataColumn::className(),
             'value' => function(\skeeks\cms\reviews2\models\Reviews2Message $model)

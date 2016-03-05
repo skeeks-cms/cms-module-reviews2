@@ -14,6 +14,7 @@ use skeeks\cms\modules\admin\controllers\AdminController;
 use skeeks\cms\modules\admin\controllers\events\AdminInitEvent;
 use skeeks\cms\reviews2\actions\AdminOneModelMessagesAction;
 use yii\helpers\ArrayHelper;
+use yii\widgets\ActiveForm;
 
 /**
  * @proprty array $ratings
@@ -123,6 +124,14 @@ class Reviews2Component extends Component
 
             'maxCountMessagesForUser'               => 'Максимальное количество отзывов к одному посту от одного польозвателя (0 - неограничено)',
         ]);
+    }
+
+    public function renderConfigForm(ActiveForm $form)
+    {
+        echo \Yii::$app->view->renderFile(__DIR__ . '/_form.php', [
+            'form'  => $form,
+            'model' => $this
+        ], $this);
     }
 
     /**

@@ -10,7 +10,7 @@ namespace skeeks\cms\reviews2;
  * Class Module
  * @package skeeks\cms\reviews2
  */
-class Module extends \skeeks\cms\base\Module
+class Module extends \yii\base\Module
 {
     public $controllerNamespace = 'skeeks\cms\reviews2\controllers';
 

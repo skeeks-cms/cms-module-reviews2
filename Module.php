@@ -10,18 +10,7 @@ namespace skeeks\cms\reviews2;
  * Class Module
  * @package skeeks\cms\reviews2
  */
-class Module extends \yii\base\Module
+class Module extends \yii\web\Module
 {
     public $controllerNamespace = 'skeeks\cms\reviews2\controllers';
-
-    /**
-     * @return array
-     */
-    static public function descriptorConfig()
-    {
-        return array_merge(parent::descriptorConfig(), [
-            "name"          => "Отзывы",
-        ]);
-    }
-
 }

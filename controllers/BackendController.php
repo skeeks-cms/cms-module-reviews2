@@ -53,6 +53,21 @@ class BackendController extends Controller
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function actions()
+    {
+        return [
+            'captcha' => [
+                'class' => 'yii\captcha\CaptchaAction',
+                'fixedVerifyCode' => null,
+            ],
+        ];
+    }
+
+
+
     public function actionSubmit()
     {
         $rr = new RequestResponse();

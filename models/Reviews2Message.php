@@ -235,11 +235,12 @@ class Reviews2Message extends \skeeks\cms\models\Core
             {
                 return $model->element->cmsContent->id;
             }],
-            ['ip', 'default', 'value' => Request::getRealUserIp()],
+            ['ip', 'default', 'value' => \Yii::$app->request->userIP],
 
             [
                 'verifyCode',
-                CaptchaValidator::className(),
+                \yii\captcha\CaptchaValidator::className(),
+                'captchaAction' => 'reviews2/backend/captcha',
                 'skipOnEmpty'   =>  $this->_skipOnEmptyVerifyCode(),
                 'on'            => self::SCENARIO_SITE_INSERT
             ],

@@ -31,7 +31,7 @@ use yii\helpers\Html;
         'comments'      => \Yii::t('skeeks/reviews2','Comment'),
         'dignity'       => \Yii::t('skeeks/reviews2','Dignity'),
         'disadvantages' => \Yii::t('skeeks/reviews2','Disadvantages'),
-        'verifyCode'    => \Yii::t('skeeks/reviews2','Verify code'),
+        'verifyCode'    => \Yii::t('skeeks/reviews2','Verification Code'),
     ]); ?>
 
 <?= $form->fieldSetEnd(); ?>

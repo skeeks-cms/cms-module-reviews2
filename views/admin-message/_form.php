@@ -47,7 +47,7 @@ if (!$model->isNewRecord)
 <?= $form->fieldSetEnd(); ?>
 
 <?= $form->fieldSet('Обработка'); ?>
-    <?= $form->fieldSelect($model, 'status', \skeeks\cms\reviews2\models\Reviews2Message::$statuses); ?>
+    <?= $form->fieldSelect($model, 'status', \skeeks\cms\reviews2\models\Reviews2Message::getStatuses()); ?>
 
     <?= $form->fieldSelect($model, 'processed_by', \yii\helpers\ArrayHelper::map(
             \skeeks\cms\models\User::find()->active()->all(),

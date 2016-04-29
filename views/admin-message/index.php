@@ -19,7 +19,7 @@
         [
             'attribute' => 'status',
             'class' => \yii\grid\DataColumn::className(),
-            'filter' => \skeeks\cms\reviews2\models\Reviews2Message::$statuses,
+            'filter' => \skeeks\cms\reviews2\models\Reviews2Message::getStatuses(),
             'format' => 'raw',
             'value' => function(\skeeks\cms\reviews2\models\Reviews2Message $model)
             {
@@ -37,7 +37,7 @@
                     $class = "success";
                 }
 
-                return '<span class="label label-' . $class . '">' . \yii\helpers\ArrayHelper::getValue(\skeeks\cms\reviews2\models\Reviews2Message::$statuses, $model->status) . '</span>';
+                return '<span class="label label-' . $class . '">' . \yii\helpers\ArrayHelper::getValue(\skeeks\cms\reviews2\models\Reviews2Message::getStatuses(), $model->status) . '</span>';
             }
         ],
 

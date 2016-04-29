@@ -72,7 +72,7 @@ JS
             <? endif; ?>
 
             <? if (in_array('user_email', \Yii::$app->reviews2->enabledFieldsOnGuest)): ?>
-                <?= $form->field($model, 'user_email')->hint('Email не будет опубликован публично')->textInput(); ?>
+                <?= $form->field($model, 'user_email')->hint(\Yii::t('skeeks/reviews2','Email will not be published publicly'))->textInput(); ?>
             <? endif; ?>
 
             <? if (in_array('comments', \Yii::$app->reviews2->enabledFieldsOnGuest)): ?>
@@ -104,7 +104,7 @@ JS
             <? endif; ?>
 
             <? if (in_array('user_email', \Yii::$app->reviews2->enabledFieldsOnUser)): ?>
-                <?= $form->field($model, 'user_email')->hint('Email не будет опубликован публично')->textInput(); ?>
+                <?= $form->field($model, 'user_email')->hint(\Yii::t('skeeks/reviews2','Email will not be published publicly'))->textInput(); ?>
             <? endif; ?>
 
             <? if (in_array('comments', \Yii::$app->reviews2->enabledFieldsOnUser)): ?>

@@ -20,7 +20,7 @@ if (!$model->isNewRecord)
 
 <? $form = ActiveForm::begin(); ?>
 
-<?= $form->fieldSet('Основная информация'); ?>
+<?= $form->fieldSet(\Yii::t('skeeks/reviews2','Basic information')); ?>
 
     <?= $form->field($model, 'element_id')->widget(
         \skeeks\cms\modules\admin\widgets\formInputs\CmsContentElementInput::className()
@@ -33,7 +33,7 @@ if (!$model->isNewRecord)
 
 <?= $form->fieldSetEnd(); ?>
 
-<?= $form->fieldSet('Автор'); ?>
+<?= $form->fieldSet(\Yii::t('skeeks/reviews2','Author')); ?>
     <?= $form->fieldSelect($model, 'created_by', \yii\helpers\ArrayHelper::map(
             \skeeks\cms\models\User::find()->active()->all(),
             'id',
@@ -46,7 +46,7 @@ if (!$model->isNewRecord)
     <?= $form->field($model, 'user_city')->textInput(); ?>
 <?= $form->fieldSetEnd(); ?>
 
-<?= $form->fieldSet('Обработка'); ?>
+<?= $form->fieldSet(\Yii::t('skeeks/reviews2','Processing')); ?>
     <?= $form->fieldSelect($model, 'status', \skeeks\cms\reviews2\models\Reviews2Message::getStatuses()); ?>
 
     <?= $form->fieldSelect($model, 'processed_by', \yii\helpers\ArrayHelper::map(
@@ -64,14 +64,14 @@ if (!$model->isNewRecord)
 <?= $form->fieldSetEnd(); ?>
 
 <? if (!$model->isNewRecord) : ?>
-    <?= $form->fieldSet('Дополнительная информация'); ?>
+    <?= $form->fieldSet(\Yii::t('skeeks/reviews2','Additional information')); ?>
         <?= \yii\widgets\DetailView::widget([
             'model'         => $model,
             'attributes'    =>
             [
                 [
                     'attribute'     => 'id',
-                    'label'         => 'Номер сообщения',
+                    'label'         => \Yii::t('skeeks/reviews2','Message number'),
                 ],
 
                 [
@@ -81,25 +81,25 @@ if (!$model->isNewRecord)
 
                 [
                     'format' => 'raw',
-                    'label' => 'Отправлено с сайта',
+                    'label' => \Yii::t('skeeks/reviews2','Sent from site'),
                     'value' => "<a href=\"{$model->site->url}\" target=\"_blank\" data-pjax=\"0\">{$model->site->name}</a>",
                 ],
 
                 [
                     'format' => 'raw',
-                    'label' => 'Отправил пользователь',
+                    'label' => \Yii::t('skeeks/reviews2','Sender'),
                     'value' => "{$model->createdBy->displayName}",
                 ],
 
                 [
                     'attribute' => 'ip',
-                    'label' => 'Ip адрес отправителя',
+                    'label' => \Yii::t('skeeks/reviews2','Ip address of the sender'),
                 ],
 
                 [
                     'attribute' => 'page_url',
                     'format' => 'raw',
-                    'label' => 'Отправлена со страницы',
+                    'label' => \Yii::t('skeeks/reviews2','Sent from the page'),
                     'value' => Html::a($model->page_url, $model->page_url, [
                         'target' => '_blank',
                         'data-pjax' => 0
@@ -115,8 +115,8 @@ if (!$model->isNewRecord)
     <?= $form->fieldSet('Для разработчиков'); ?>
 
     <div class="sx-block">
-      <h3>Дополнительные данные, которые могут пригодиться в некоторых случаях, разработчикам.</h3>
-      <small>Для удобства просмотра данных, можно воспользоваться сервисом: <a href="http://jsonformatter.curiousconcept.com/#" target="_blank">http://jsonformatter.curiousconcept.com/#</a></small>
+      <h3><?=\Yii::t('skeeks/reviews2','Additional information that may be useful in some cases, the developers.');?></h3>
+      <small><?=\Yii::t('skeeks/reviews2','For the convenience of viewing the data, you can use the service');?>: <a href="http://jsonformatter.curiousconcept.com/#" target="_blank">http://jsonformatter.curiousconcept.com/#</a></small>
     </div>
     <hr />
 

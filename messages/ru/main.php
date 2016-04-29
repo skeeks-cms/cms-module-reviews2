@@ -1,0 +1,21 @@
+<?php
+return [
+    'You can specify the maximum rating value, ie the user will vote, exposing a rating from 1 to the value you specified in steps of 1.' => 'Вы можете указать максимальное значение рейтинга, то есть пользователь будет голосовать, выставляя оценку от 1 до указанного вами значения с шагом 1.',
+    'Username' => 'Имя пользователя',
+    'User Email' => 'Email пользователя',
+    'Comment' => 'Комментарий',
+    'Dignity' => 'Достоинства',
+    'Disadvantages' => 'Недостатки',
+    'Verify code' => 'Проверочный код',
+    'Security' => 'Безопасность',
+    'Contact elements' => 'Связь с элементами',
+    'Notice' => 'Уведомления',
+    'Access' => 'Доступ',
+    'Attention!' => 'Внимание!',
+    'Permissions are stored in real time. Thus, these settings are independent of site or user.' => 'Права доступа сохраняются в режиме реального времени. Так же эти настройки не зависят от сайта или пользователя.',
+    'Who can add a review on the site' => 'Кто может добавлять отзыв на сайте',
+    'New' => 'Новый',
+    'In Progress' => 'В обработке',
+    'Approved' => 'Допущен',
+    'Rejected' => 'Отклонен',
+];

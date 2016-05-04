@@ -8,13 +8,13 @@
 return [
     'components' =>
     [
-        'reviews2' => [
+        'reviews2' =>
+        [
             'class'         => '\skeeks\cms\reviews2\components\Reviews2Component',
-        ]
-    ],
+        ],
 
-    'i18n' => [
-        'translations' =>
+        'i18n' => [
+            'translations' =>
             [
                 'skeeks/reviews2' => [
                     'class'             => 'yii\i18n\PhpMessageSource',
@@ -24,7 +24,10 @@ return [
                     ],
                 ]
             ]
+        ],
     ],
+
+
 
     'modules' =>
     [

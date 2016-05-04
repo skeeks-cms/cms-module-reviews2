@@ -112,7 +112,7 @@ if (!$model->isNewRecord)
 
 
 
-    <?= $form->fieldSet('Для разработчиков'); ?>
+    <?= $form->fieldSet(\Yii::t('skeeks/reviews2','For developers')); ?>
 
     <div class="sx-block">
       <h3><?=\Yii::t('skeeks/reviews2','Additional information that may be useful in some cases, the developers.');?></h3>

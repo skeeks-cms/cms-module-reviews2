@@ -67,6 +67,7 @@ return [
     'Sender' => 'Отправил пользователь',
     'Ip address of the sender' => 'Ip адрес отправителя',
     'Sent from the page' => 'Отправлено со страницы',
+    'For developers' => 'Для разработчиков',
     'Additional information that may be useful in some cases, the developers.' => 'Дополнительные данные, которые могут пригодиться в некоторых случаях, разработчикам.',
     'For the convenience of viewing the data, you can use the service' => 'Для удобства просмотра данных, можно воспользоваться сервисом',
     'Email will not be published publicly' => 'Email не будет опубликован публично',

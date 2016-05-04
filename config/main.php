@@ -13,6 +13,19 @@ return [
         ]
     ],
 
+    'i18n' => [
+        'translations' =>
+            [
+                'skeeks/reviews2' => [
+                    'class'             => 'yii\i18n\PhpMessageSource',
+                    'basePath'          => '@skeeks/cms/reviews2/messages',
+                    'fileMap' => [
+                        'skeeks/reviews2' => 'main.php',
+                    ],
+                ]
+            ]
+    ],
+
     'modules' =>
     [
         'reviews2' => [

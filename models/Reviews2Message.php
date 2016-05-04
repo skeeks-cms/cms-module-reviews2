@@ -67,13 +67,23 @@ class Reviews2Message extends \skeeks\cms\models\Core
     const STATUS_CANCELED       = 15;
 
 
-    static public $statuses =
+    /*static public $statuses =
     [
         self::STATUS_NEW                => "Новый",
         self::STATUS_PROCESSED          => "В обработке",
         self::STATUS_ALLOWED            => "Допущен",
         self::STATUS_CANCELED           => "Отклонен",
-    ];
+    ];*/
+
+    static public function getStatuses()
+    {
+        return [
+            self::STATUS_NEW                => \Yii::t('skeeks/reviews2',"New"),
+            self::STATUS_PROCESSED          => \Yii::t('skeeks/reviews2',"In Progress"),
+            self::STATUS_ALLOWED            => \Yii::t('skeeks/reviews2',"Approved"),
+            self::STATUS_CANCELED           => \Yii::t('skeeks/reviews2',"Rejected"),
+        ];
+    }
 
     /**
      * @inheritdoc
@@ -213,7 +223,7 @@ class Reviews2Message extends \skeeks\cms\models\Core
             [['site_code'], 'string', 'max' => 15],
             [['user_name', 'user_email', 'user_phone', 'user_city'], 'string', 'max' => 255],
 
-            [['status'], 'in', 'range' => array_keys(self::$statuses)],
+            [['status'], 'in', 'range' => array_keys(self::getStatuses())],
 
             ['site_code', 'default', 'value' => \Yii::$app->cms->site->code],
 
@@ -269,33 +279,33 @@ class Reviews2Message extends \skeeks\cms\models\Core
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'created_by' => Yii::t('app', 'Created By'),
-            'updated_by' => Yii::t('app', 'Updated By'),
-            'created_at' => Yii::t('app', 'Created At'),
-            'updated_at' => Yii::t('app', 'Updated At'),
-            'published_at' => Yii::t('app', 'Время публикации'),
-            'element_id' => Yii::t('app', 'Элемент'),
-            'content_id' => Yii::t('app', 'Тип контента'),
-            'dignity' => Yii::t('app', 'Достоинства'),
-            'disadvantages' => Yii::t('app', 'Недостатки'),
-            'comments' => Yii::t('app', 'Комментарий'),
-            'rating' => Yii::t('app', 'Rating'),
-            'status' => Yii::t('app', 'Status'),
-            'ip' => Yii::t('app', 'Ip'),
-            'page_url' => Yii::t('app', 'Page Url'),
-            'data_server' => Yii::t('app', 'Data Server'),
-            'data_session' => Yii::t('app', 'Data Session'),
-            'data_cookie' => Yii::t('app', 'Data Cookie'),
-            'data_request' => Yii::t('app', 'Data Request'),
-            'site_code' => Yii::t('app', 'Сайт'),
-            'user_name' => Yii::t('app', 'Имя'),
-            'user_email' => Yii::t('app', 'Email'),
-            'user_phone' => Yii::t('app', 'Phone'),
-            'user_city' => Yii::t('app', 'City'),
-            'processed_at' => Yii::t('app', 'Когда обратали'),
-            'processed_by' => Yii::t('app', 'Кто обработал'),
-            'verifyCode' => Yii::t('app', 'Verification Code'),
+            'id' => \Yii::t('skeeks/reviews2', 'ID'),
+            'created_by' => \Yii::t('skeeks/reviews2', 'Created By'),
+            'updated_by' => \Yii::t('skeeks/reviews2', 'Updated By'),
+            'created_at' => \Yii::t('skeeks/reviews2', 'Created At'),
+            'updated_at' => \Yii::t('skeeks/reviews2', 'Updated At'),
+            'published_at' => \Yii::t('skeeks/reviews2', 'Published At'),
+            'element_id' => \Yii::t('skeeks/reviews2', 'Element'),
+            'content_id' => \Yii::t('skeeks/reviews2', 'Content type'),
+            'dignity' => \Yii::t('skeeks/reviews2', 'Dignity'),
+            'disadvantages' => \Yii::t('skeeks/reviews2', 'Disadvantages'),
+            'comments' => \Yii::t('skeeks/reviews2', 'Comment'),
+            'rating' => \Yii::t('skeeks/reviews2', 'Rating'),
+            'status' => \Yii::t('skeeks/reviews2', 'Status'),
+            'ip' => \Yii::t('skeeks/reviews2', 'Ip'),
+            'page_url' => \Yii::t('skeeks/reviews2', 'Page Url'),
+            'data_server' => \Yii::t('skeeks/reviews2', 'Data Server'),
+            'data_session' => \Yii::t('skeeks/reviews2', 'Data Session'),
+            'data_cookie' => \Yii::t('skeeks/reviews2', 'Data Cookie'),
+            'data_request' => \Yii::t('skeeks/reviews2', 'Data Request'),
+            'site_code' => \Yii::t('skeeks/reviews2', 'Site'),
+            'user_name' => \Yii::t('skeeks/reviews2', 'Name'),
+            'user_email' => \Yii::t('skeeks/reviews2', 'Email'),
+            'user_phone' => \Yii::t('skeeks/reviews2', 'Phone'),
+            'user_city' => \Yii::t('skeeks/reviews2', 'City'),
+            'processed_at' => \Yii::t('skeeks/reviews2', 'Processed At'),
+            'processed_by' => \Yii::t('skeeks/reviews2', 'Processed By'),
+            'verifyCode' => \Yii::t('skeeks/reviews2', 'Verification Code'),
         ];
     }
 
@@ -372,7 +382,7 @@ class Reviews2Message extends \skeeks\cms\models\Core
                 ])
                 ->setFrom([\Yii::$app->cms->adminEmail => \Yii::$app->cms->appName])
                 ->setTo($email)
-                ->setSubject("Добавлен новый отзыв #" . $this->id)
+                ->setSubject(\Yii::t('skeeks/reviews2',"Added a new review")." #" . $this->id)
                 ->send();
             }
         }

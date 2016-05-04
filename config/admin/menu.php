@@ -12,19 +12,19 @@ return [
         'items' =>
         [
             [
-                "label"     => "Отзывы",
+                "label"     => \Yii::t('skeeks/reviews2',"Reviews"),
                 "img"       => ['\skeeks\cms\reviews2\assets\Reviews2Asset', 'icons/reviews.jpg'],
 
                 'items' =>
                 [
                     [
-                        "label" => "Отзывы",
+                        "label" => \Yii::t('skeeks/reviews2',"Reviews"),
                         "url"   => ["reviews2/admin-message"],
                         "img"       => ['\skeeks\cms\reviews2\assets\Reviews2Asset', 'icons/reviews.jpg'],
                     ],
 
                     [
-                        "label" => "Настройки",
+                        "label" => \Yii::t('skeeks/reviews2',"Settings"),
                         "url"   => ["cms/admin-settings", "component" => 'skeeks\cms\reviews2\components\Reviews2Component'],
                         "img"       => ['\skeeks\cms\modules\admin\assets\AdminAsset', 'images/icons/settings.png'],
                         "activeCallback"       => function(\skeeks\cms\modules\admin\helpers\AdminMenuItem $adminMenuItem)

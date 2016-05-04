@@ -23,7 +23,7 @@ class AdminMessageController extends AdminModelEditorController
 {
     public function init()
     {
-        $this->name                     = "Управление отзывами";
+        $this->name                     = \Yii::t('skeeks/reviews2',"Management reviews");
         $this->modelShowAttribute       = "id";
         $this->modelClassName           = Reviews2Message::className();
 
@@ -40,7 +40,7 @@ class AdminMessageController extends AdminModelEditorController
                 "status-allowed-multi" =>
                 [
                     'class' => AdminMultiModelEditAction::className(),
-                    "name" => "Принять",
+                    "name" => \Yii::t('skeeks/reviews2',"Accept"),
                     //"icon"              => "glyphicon glyphicon-trash",
                     "eachCallback" => [$this, 'eachMultiStatusAllowed'],
                 ],
@@ -48,7 +48,7 @@ class AdminMessageController extends AdminModelEditorController
                 "status-canceled-multi" =>
                 [
                     'class' => AdminMultiModelEditAction::className(),
-                    "name" => "Отменить",
+                    "name" => \Yii::t('skeeks/reviews2',"Cancel"),
                     //"icon"              => "glyphicon glyphicon-trash",
                     "eachCallback" => [$this, 'eachMultiStatusCanceled'],
                 ],
@@ -56,7 +56,7 @@ class AdminMessageController extends AdminModelEditorController
                 "status-processed-multi" =>
                 [
                     'class' => AdminMultiModelEditAction::className(),
-                    "name" => "В обработке",
+                    "name" => \Yii::t('skeeks/reviews2',"In progress"),
                     //"icon"              => "glyphicon glyphicon-trash",
                     "eachCallback" => [$this, 'eachMultiStatusProcessed'],
                 ],

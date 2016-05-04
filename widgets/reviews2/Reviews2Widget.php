@@ -30,7 +30,7 @@ class Reviews2Widget extends WidgetRenderable
     static public function descriptorConfig()
     {
         return array_merge(parent::descriptorConfig(), [
-            'name' => 'Виджет отзывов'
+            'name' => \Yii::t('skeeks/reviews2','Widget reviews')
         ]);
     }
 
@@ -56,31 +56,37 @@ class Reviews2Widget extends WidgetRenderable
     public $createdBy                    = [];
 
 
-    public $btnSubmit       = "Добавить отзыв";
+    public $btnSubmit       = "";
     public $btnSubmitClass  = 'btn btn-primary';
+
+    public function init()
+    {
+        if(!$this->btnSubmit) $this->btnSubmit = \Yii::t('skeeks/reviews2','Add a review');
+        parent::init();
+    }
 
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(),
         [
-            'btnSubmit'         => 'Надпись на кнопке отправки формы',
-            'btnSubmitClass'    => 'Класс кнопки отправки формы',
+            'btnSubmit'         => \Yii::t('skeeks/reviews2','The inscription on the button to send the form'),
+            'btnSubmitClass'    => \Yii::t('skeeks/reviews2','Class form submit button'),
 
 
-            'enabledPaging'             => 'Включить постраничную навигацию',
-            'enabledPjaxPagination'     => 'Включить ajax навигацию',
-            'pageParamName'             => 'Названия парамтера страниц, при постраничной навигации',
-            'pageSize'                  => 'Количество записей на одной странице',
+            'enabledPaging'             => \Yii::t('skeeks/reviews2','Enable pagination'),
+            'enabledPjaxPagination'     => \Yii::t('skeeks/reviews2','Enable ajax navigation'),
+            'pageParamName'             => \Yii::t('skeeks/reviews2','Names of pages parameter for pagination'),
+            'pageSize'                  => \Yii::t('skeeks/reviews2','Number of records on one page'),
 
-            'orderBy'                   => 'По какому параметру сортировать',
-            'order'                     => 'Направление сортировки',
+            'orderBy'                   => \Yii::t('skeeks/reviews2','Order by'),
+            'order'                     => \Yii::t('skeeks/reviews2','Sorting direction'),
 
-            'label'                     => 'Заголовок',
+            'label'                     => \Yii::t('skeeks/reviews2','Label'),
 
-            'limit'                     => 'Максимальное количество записей в выборке (limit)',
-            'statuses'                  => 'Учитывать статусы',
-            'site_codes'                  => 'Учитывать сайты',
-            'createdBy'                 => 'Выбор записей пользователей',
+            'limit'                     => \Yii::t('skeeks/reviews2','The maximum number of entries in the sample (limit)'),
+            'statuses'                  => \Yii::t('skeeks/reviews2','Consider statuses'),
+            'site_codes'                => \Yii::t('skeeks/reviews2','Consider sites'),
+            'createdBy'                 => \Yii::t('skeeks/reviews2','Created By'),
 
         ]);
     }

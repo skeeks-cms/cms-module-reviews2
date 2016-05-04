@@ -117,7 +117,7 @@ class BackendController extends Controller
                         if ($messagesFind->count() >= \Yii::$app->reviews2->maxCountMessagesForUser)
                         {
                             $rr->success = false;
-                            $rr->message = "Вы уже добавляли отзыв к этой записи ранее.";
+                            $rr->message = \Yii::t('skeeks/reviews2',"You have already added a review for this post earlier.");
 
                             return $rr;
                         }
@@ -146,7 +146,7 @@ class BackendController extends Controller
                     if ($messagesFind2->count() >= \Yii::$app->reviews2->securityRateLimitRequests)
                     {
                         $rr->success = false;
-                        $rr->message = "Вы слишком часто добавляете отзывы.";
+                        $rr->message = \Yii::t('skeeks/reviews2',"You too often add reviews.");
 
                         return $rr;
                     }
@@ -174,13 +174,13 @@ class BackendController extends Controller
                 {
 
                     $rr->success = false;
-                    $rr->message = "Отзыв не добавлен: " . implode(",", $model->getFirstErrors());
+                    $rr->message = \Yii::t('skeeks/reviews2',"Review not added").": " . implode(",", $model->getFirstErrors());
                 }
 
             } else
             {
                 $rr->success = false;
-                $rr->message = "Отзыв не добавлен: " . implode(",", $model->getFirstErrors());
+                $rr->message = \Yii::t('skeeks/reviews2',"Review not added").": " . implode(",", $model->getFirstErrors());
             }
         }
 

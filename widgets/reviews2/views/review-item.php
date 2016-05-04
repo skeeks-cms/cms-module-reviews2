@@ -18,30 +18,30 @@
             <?= $model->createdBy->displayName; ?>
         <? else : ?>
             <img src="<?= \skeeks\cms\helpers\Image::getCapSrc(); ?>" />
-            Гость
+            <?=\Yii::t('skeeks/reviews2','Guest');?>
         <? endif; ?>
     </div>
     <div class="col-lg-10">
         <p>
-            Голос: <?= $model->rating; ?>
+            <?=\Yii::t('skeeks/reviews2','Voice');?>: <?= $model->rating; ?>
         </p>
         <? if ($model->comments) : ?>
             <p>
-            <b>Комментарий:</b><br />
+            <b><?=\Yii::t('skeeks/reviews2','Comment');?>:</b><br />
             <?= $model->comments; ?>
             </p>
         <? endif; ?>
 
         <? if ($model->dignity) : ?>
             <p>
-            <b>Достоинства:</b><br />
+            <b><?=\Yii::t('skeeks/reviews2','Dignity');?>:</b><br />
             <?= $model->dignity; ?>
             </p>
         <? endif; ?>
 
         <? if ($model->disadvantages) : ?>
             <p>
-            <b>Недостатки:</b><br />
+            <b><?=\Yii::t('skeeks/reviews2','Disadvantages');?>:</b><br />
             <?= $model->disadvantages; ?>
             </p>
         <? endif; ?>

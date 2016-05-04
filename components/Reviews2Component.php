@@ -41,8 +41,8 @@ class Reviews2Component extends Component
     public $securityRateLimitRequests               = 10;
     public $securityRateLimitTime                   = 3600;
 
-    public $messageSuccessBeforeApproval            = "Отзыв успешно добавлен, и будет опубликован на сайте после проверки модератора.";
-    public $messageSuccess                          = "Отзыв успешно добавлен, спасибо.";
+    public $messageSuccessBeforeApproval            = "";
+    public $messageSuccess                          = "";
 
     public $enabledFieldsOnUser                     = ['comments', 'dignity', 'disadvantages'];
     public $enabledFieldsOnGuest                    = ['comments', 'user_email', 'user_name', 'dignity', 'disadvantages', 'verifyCode'];
@@ -54,8 +54,15 @@ class Reviews2Component extends Component
     static public function descriptorConfig()
     {
         return array_merge(parent::descriptorConfig(), [
-            'name'          => 'Отзывы',
+            'name'          => \Yii::t('skeeks/reviews2','Reviews'),
         ]);
+    }
+
+    public function init()
+    {
+        if(!$this->messageSuccessBeforeApproval) $this->messageSuccessBeforeApproval = \Yii::t('skeeks/reviews2','Review successfully added, and will be published at the site after being moderated.');
+        if(!$this->messageSuccess) $this->messageSuccess = \Yii::t('skeeks/reviews2','Reviewed added successfully, thank you.');
+        parent::init();
     }
 
     public function rules()
@@ -82,26 +89,26 @@ class Reviews2Component extends Component
     public function attributeLabels()
     {
         return ArrayHelper::merge(parent::attributeLabels(), [
-            'enabledBeforeApproval'                 => 'Использовать премодерацию отзывов',
-            'maxValue'                              => 'Максимальное значение рейтинга',
+            'enabledBeforeApproval'                 => \Yii::t('skeeks/reviews2','Use reviews pre-moderation'),
+            'maxValue'                              => \Yii::t('skeeks/reviews2','Maximum value of rating'),
 
-            'elementPropertyRatingCode'             => 'Связь значения рейтинга со свойством элемента',
-            'elementPropertyCountCode'              => 'Связь количества отзывов со свойством элемента',
+            'elementPropertyRatingCode'             => \Yii::t('skeeks/reviews2','Relation rating value with element property'),
+            'elementPropertyCountCode'              => \Yii::t('skeeks/reviews2','Relation reviews amount with element property'),
 
-            'notifyEmails'                          => 'Email адреса для уведомлений',
-            'notifyPhones'                          => 'Телефонные номера для уведомлений',
+            'notifyEmails'                          => \Yii::t('skeeks/reviews2','Notify emails'),
+            'notifyPhones'                          => \Yii::t('skeeks/reviews2','Notify phones'),
 
-            'securityEnabledRateLimit'              => 'Включить защиту по IP',
-            'securityRateLimitRequests'             => 'Максимальное количество отзывов',
-            'securityRateLimitTime'                 => 'Время за которое будет размещено максимальное количество отзывов',
+            'securityEnabledRateLimit'              => \Yii::t('skeeks/reviews2','Enable protection by IP'),
+            'securityRateLimitRequests'             => \Yii::t('skeeks/reviews2','Max reviews'),
+            'securityRateLimitTime'                 => \Yii::t('skeeks/reviews2','The time for which will be placed the maximum number of user reviews'),
 
-            'messageSuccessBeforeApproval'          => 'Сообщение об успешно добавленном отзыве (если включена предмодерация)',
-            'messageSuccess'                        => 'Сообщение об успешно добавленном отзыве (без предмодерации)',
+            'messageSuccessBeforeApproval'          => \Yii::t('skeeks/reviews2','Notice of review successfully added (if the pre-moderation)'),
+            'messageSuccess'                        => \Yii::t('skeeks/reviews2','Notice of review successfully added (without pre-moderation)'),
 
-            'enabledFieldsOnGuest'                  => 'Поля в форме добавления отзыва (пользователь неавторизован)',
-            'enabledFieldsOnUser'                   => 'Поля в форме добавления отзыва (пользователь авторизован)',
+            'enabledFieldsOnGuest'                  => \Yii::t('skeeks/reviews2','Fields in the form of adding a review (not authorized)'),
+            'enabledFieldsOnUser'                   => \Yii::t('skeeks/reviews2','Fields in the form of adding a review (user is autorized)'),
 
-            'maxCountMessagesForUser'               => 'Максимальное количество отзывов к одному посту от одного польозвателя (0 - неограничено)',
+            'maxCountMessagesForUser'               => \Yii::t('skeeks/reviews2','The maximum number of reviews to one article per user (0 - unlimited)'),
         ]);
     }
 
@@ -118,7 +125,8 @@ class Reviews2Component extends Component
      */
     public function getRatings()
     {
-        for($i >= 1; $i <= $this->maxValue; $i ++)
+
+        for($i = 1; $i <= $this->maxValue; $i ++)
         {
             $result[$i] = $i;
         }

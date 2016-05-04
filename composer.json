@@ -1,14 +1,14 @@
 {
     "name": "skeeks/cms-module-reviews2",
-    "description": "Отзывы для SkeekS CMS >= 2.0",
-    "keywords": ["module", "cms", "skeeks", "sx", "app", "yii2"],
+    "description": "Reviews for content elements fot SkeekS CMS",
+    "keywords": ["module", "cms", "skeeks", "sx", "app", "yii2", "reviews"],
     "homepage": "http://www.skeeks.com/",
     "type": "yii2-extension",
-    "license": "BSD-3-Clause",
+    "license": "GPL-3.0+",
     "support": {
         "issues": "http://cms.skeeks.com",
-        "wiki": "http://git.skeeks.com/skeeks/cms/wikis/home",
-        "source": "http://git.skeeks.com/skeeks/cms"
+        "wiki": "http://en.cms.skeeks.com/docs/",
+        "source": "http://git.skeeks.com/skeeks/cms-module-reviews2"
     },
     "authors": [
         {

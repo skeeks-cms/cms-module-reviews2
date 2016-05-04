@@ -25,26 +25,26 @@ Configuration app
 
 'components' =>
 [
-    'dbDumper' => [
-        'class'         => '\skeeks\cms\dbDumper\DbDumperComponent',
-    ],
-    'i18n' => [
-        'translations' =>
+    'reviews2' => [
+        'class'         => '\skeeks\cms\reviews2\components\Reviews2Component',
+    ]
+],
+'i18n' => [
+    'translations' =>
         [
-            'skeeks/dbDumper' => [
+            'skeeks/reviews2' => [
                 'class'             => 'yii\i18n\PhpMessageSource',
-                'basePath'          => '@skeeks/cms/dbDumper/messages',
+                'basePath'          => '@skeeks/cms/reviews2/messages',
                 'fileMap' => [
-                    'skeeks/dbDumper' => 'main.php',
+                    'skeeks/reviews2' => 'main.php',
                 ],
             ]
         ]
-    ],
 ],
 'modules' =>
 [
-    'dbDumper' => [
-        'class'         => '\skeeks\cms\dbDumper\DbDumperModule',
+    'reviews2' => [
+        'class'         => '\skeeks\cms\reviews2\Module',
     ]
 ]
 
@@ -54,7 +54,7 @@ Configuration app
 * [Web site](http://en.cms.skeeks.com)
 * [Web site (rus)](http://cms.skeeks.com)
 * [Author](http://skeeks.com)
-* [ChangeLog](https://github.com/skeeks-cms/cms-db-dumper/blob/master/CHANGELOG.md)
+* [ChangeLog](https://github.com/skeeks-cms/cms-module-reviews2/blob/master/CHANGELOG.md)
 
 
 ___

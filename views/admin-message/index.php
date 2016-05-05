@@ -44,7 +44,7 @@
 
         [
             'class' => \skeeks\cms\grid\CreatedAtColumn::className(),
-            'label' => 'Добавлен'
+            'label' => \Yii::t('skeeks/reviews2','Added')
         ],
         [
             'class' => \skeeks\cms\grid\CreatedByColumn::className(),

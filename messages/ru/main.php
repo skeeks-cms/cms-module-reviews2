@@ -93,4 +93,5 @@ return [
     'Consider statuses' => 'Учитывать статусы',
     'Consider sites' => 'Учитывать сайты',
     'Created By' => 'Выбор записей пользователей',
+    'Added' => 'Добавлен',
 ];

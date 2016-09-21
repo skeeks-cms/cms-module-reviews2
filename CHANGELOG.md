@@ -1,6 +1,10 @@
 Процесс разработки модуля.
 ==============
 
+1.2.3.pre
+-----------------
+  * Fixed #35 [https://github.com/skeeks-cms/cms/issues/35] (Errors in JavaScript code in the behavior of the widget in the admin table)
+
 1.2.2
 -----------------
   * Added internationalization

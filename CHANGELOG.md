@@ -1,7 +1,7 @@
 Процесс разработки модуля.
 ==============
 
-1.2.3.pre
+1.2.3
 -----------------
   * Fixed #35 [https://github.com/skeeks-cms/cms/issues/35] (Errors in JavaScript code in the behavior of the widget in the admin table)
 

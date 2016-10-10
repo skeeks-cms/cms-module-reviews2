@@ -14,6 +14,7 @@ use skeeks\cms\models\User;
 use Yii;
 use yii\db\BaseActiveRecord;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 
 /**
  * This is the model class for table "{{%reviews2_message}}".
@@ -176,7 +177,10 @@ class Reviews2Message extends \skeeks\cms\models\Core
             }
         }
 
-        $relatedPropertiesModel->save();
+        if (!$relatedPropertiesModel->save())
+        {
+            \Yii::error(\Yii::t('skeeks/reviews2', 'Could not save data on the number of comments in the content element.') . " " . Json::encode($relatedPropertiesModel->errors) . " — " . Json::encode($relatedPropertiesModel->toArray()), static::className());
+        };
     }
 
 
@@ -307,8 +311,15 @@ class Reviews2Message extends \skeeks\cms\models\Core
             'processed_by' => \Yii::t('skeeks/reviews2', 'Processed By'),
             'verifyCode' => \Yii::t('skeeks/reviews2', 'Verification Code'),
         ];
+
     }
 
+    public function attributeHints()
+    {
+        return ArrayHelper::merge(parent::attributeHints(), [
+            ''
+        ]);
+    }
     /**
      * @return \yii\db\ActiveQuery
      */

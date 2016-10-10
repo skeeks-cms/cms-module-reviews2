@@ -14,10 +14,12 @@ use skeeks\cms\modules\admin\controllers\AdminController;
 use skeeks\cms\modules\admin\controllers\events\AdminInitEvent;
 use skeeks\cms\reviews2\actions\AdminOneModelMessagesAction;
 use yii\helpers\ArrayHelper;
+use yii\validators\EmailValidator;
 use yii\widgets\ActiveForm;
 
 /**
  * @proprty array $ratings
+ * @proprty array $notifyEmails
  *
  * Class Reviews2Component
  * @package skeeks\cms\reviews2\components
@@ -34,7 +36,8 @@ class Reviews2Component extends Component
     public $elementPropertyRatingCode               = "reviews2_rating";
     public $elementPropertyCountCode                = "reviews2_count";
 
-    public $notifyEmails                            = [];
+    //public $notifyEmails                            = [];
+    public $notify_emails                           = '';
     public $notifyPhones                            = [];
 
     public $securityEnabledRateLimit                = Cms::BOOL_Y;
@@ -76,14 +79,52 @@ class Reviews2Component extends Component
             [['elementPropertyCountCode'], 'string'],
             [['messageSuccessBeforeApproval'], 'string'],
             [['messageSuccess'], 'string'],
-            [['notifyEmails'], 'safe'],
+            [['notify_emails'], 'string'],
             [['notifyPhones'], 'safe'],
             [['maxCountMessagesForUser'], 'integer'],
             [['enabledFieldsOnGuest'], 'safe'],
             [['enabledFieldsOnUser'], 'safe'],
             [['securityEnabledRateLimit'], 'string'],
             [['enabledBeforeApproval', 'securityEnabledRateLimit'], 'in', 'range' => array_keys(\Yii::$app->cms->booleanFormat())],
+
+            [['notify_emails'], function($attribute)
+            {
+                if ($this->notifyEmails)
+                {
+                    foreach ($this->notifyEmails as $email)
+                    {
+                        $validator = new EmailValidator();
+
+                        if (!$validator->validate($email, $error))
+                        {
+                            $this->addError($attribute, $email . ' — ' . \Yii::t('skeeks/reviews2', 'Incorrect email address'));
+                            return false;
+                        }
+                    }
+                }
+
+            }],
         ]);
+    }
+
+
+    /**
+     * @return array
+     */
+    public function getNotifyEmails()
+    {
+        $emailsAll = [];
+        if ($this->notify_emails)
+        {
+            $emails = explode(",", $this->notify_emails);
+
+            foreach ($emails as $email)
+            {
+                $emailsAll[] = trim($email);
+            }
+        }
+
+        return $emailsAll;
     }
 
     public function attributeLabels()
@@ -95,7 +136,7 @@ class Reviews2Component extends Component
             'elementPropertyRatingCode'             => \Yii::t('skeeks/reviews2','Relation rating value with element property'),
             'elementPropertyCountCode'              => \Yii::t('skeeks/reviews2','Relation reviews amount with element property'),
 
-            'notifyEmails'                          => \Yii::t('skeeks/reviews2','Notify emails'),
+            'notify_emails'                         => \Yii::t('skeeks/reviews2','Notify emails'),
             'notifyPhones'                          => \Yii::t('skeeks/reviews2','Notify phones'),
 
             'securityEnabledRateLimit'              => \Yii::t('skeeks/reviews2','Enable protection by IP'),
@@ -111,6 +152,14 @@ class Reviews2Component extends Component
             'maxCountMessagesForUser'               => \Yii::t('skeeks/reviews2','The maximum number of reviews to one article per user (0 - unlimited)'),
         ]);
     }
+
+    public function attributeHints()
+    {
+        return ArrayHelper::merge(parent::attributeHints(), [
+            'notify_emails' => \Yii::t('skeeks/reviews2', 'You can specify multiple Email addresses (separated by commas), which will be sent notification of new reviews.'),
+        ]);
+    }
+
 
     public function renderConfigForm(ActiveForm $form)
     {

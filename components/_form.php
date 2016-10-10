@@ -48,19 +48,10 @@ use yii\helpers\Html;
 <?= $form->fieldSetEnd(); ?>
 
 <?= $form->fieldSet(\Yii::t('skeeks/reviews2','Notice')); ?>
-    <?= $form->field($model, 'notifyEmails')->widget(
-            \skeeks\cms\widgets\formInputs\EditedSelect::className(),
-            [
-                'controllerRoute' => 'cms/admin-user-email',
-                'items' => \yii\helpers\ArrayHelper::map(
-                    \skeeks\cms\models\CmsUserEmail::find()->all(),
-                    'value',
-                    'value'
-                ),
-                'multiple' => true
-            ]
-    ); ?>
-    <?= $form->field($model, 'notifyPhones')->widget(
+    <?= $form->field($model, 'notify_emails')->textarea([
+        'rows' => 3
+    ]); ?>
+    <?/*= $form->field($model, 'notifyPhones')->widget(
         \skeeks\cms\widgets\formInputs\EditedSelect::className(),
             [
             'controllerRoute' => 'cms/admin-user-phone',
@@ -71,7 +62,7 @@ use yii\helpers\Html;
             ),
             'multiple' => true
         ]
-); ?>
+); */?>
 <?= $form->fieldSetEnd(); ?>
 
 

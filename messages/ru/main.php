@@ -94,4 +94,8 @@ return [
     'Consider sites' => 'Учитывать сайты',
     'Created By' => 'Выбор записей пользователей',
     'Added' => 'Добавлен',
+    'Rating' => 'Рейтинг',
+    'Could not save data on the number of comments in the content element.' => 'Не удалось сохранить данные о количестве отзывов в элементе контента.',
+    'You can specify multiple Email addresses (separated by commas), which will be sent notification of new reviews.' => 'Вы можете указать несколько Email адресов (через запятую), на которые будут приходить уведомления о новых отзывах.',
+    'Incorrect email address' => 'Неверный адрес электронной почты',
 ];

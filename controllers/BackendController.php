@@ -92,7 +92,7 @@ class BackendController extends Controller
                     {
                         $messagesFind
                             ->andWhere([
-                                'ip' => Request::getRealUserIp()
+                                'ip' => \Yii::$app->request->userIP
                             ])
                             ->andWhere([
                                 'or',
@@ -129,7 +129,7 @@ class BackendController extends Controller
                     $messagesFind2 = Reviews2Message::find();
                     if (\Yii::$app->user->isGuest)
                     {
-                        $messagesFind2->andWhere(['ip' => Request::getRealUserIp()]);
+                        $messagesFind2->andWhere(['ip' => \Yii::$app->request->userIP]);
                     } else
                     {
                         $messagesFind2->andWhere(['created_by' => \Yii::$app->user->identity->id]);

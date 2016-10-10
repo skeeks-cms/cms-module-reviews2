@@ -15,6 +15,7 @@ use Yii;
 use yii\db\BaseActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
+use yii\web\Application;
 
 /**
  * This is the model class for table "{{%reviews2_message}}".
@@ -242,14 +243,27 @@ class Reviews2Message extends \skeeks\cms\models\Core
             ['data_cookie', 'default', 'value' => $_COOKIE],
             ['data_session', 'default', 'value' => function(self $model, $attribute)
             {
-                \Yii::$app->session->open();
-                return $_SESSION;
+                if (\Yii::$app instanceof Application)
+                {
+                    \Yii::$app->session->open();
+                    return $_SESSION;
+                }
+
+                return [];
             }],
             ['content_id', 'default', 'value' => function(self $model, $attribute)
             {
                 return $model->element->cmsContent->id;
             }],
-            ['ip', 'default', 'value' => \Yii::$app->request->userIP],
+            ['ip', 'default', 'value' => function($model)
+            {
+                if (\Yii::$app instanceof Application)
+                {
+                    return \Yii::$app->request->userIP;
+                }
+
+                return null;
+            }],
 
             [
                 'verifyCode',
@@ -263,12 +277,12 @@ class Reviews2Message extends \skeeks\cms\models\Core
 
     protected function _skipOnEmptyVerifyCode()
     {
-        if (\Yii::$app->user->isGuest && in_array('verifyCode', \Yii::$app->reviews2->enabledFieldsOnGuest))
+        if (\Yii::$app instanceof Application && \Yii::$app->user->isGuest && in_array('verifyCode', \Yii::$app->reviews2->enabledFieldsOnGuest))
         {
             return false;
         }
 
-        if (!\Yii::$app->user->isGuest && in_array('verifyCode', \Yii::$app->reviews2->enabledFieldsOnUser))
+        if (\Yii::$app instanceof Application && !\Yii::$app->user->isGuest && in_array('verifyCode', \Yii::$app->reviews2->enabledFieldsOnUser))
         {
             return false;
         }

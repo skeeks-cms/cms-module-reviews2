@@ -88,7 +88,7 @@ if (!$model->isNewRecord)
                 [
                     'format' => 'raw',
                     'label' => \Yii::t('skeeks/reviews2','Sender'),
-                    'value' => "{$model->createdBy->displayName}",
+                    'value' => $model->createdBy ? "{$model->createdBy->displayName}" : " - ",
                 ],
 
                 [

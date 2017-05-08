@@ -27,7 +27,7 @@ return [
                         "label" => \Yii::t('skeeks/reviews2',"Settings"),
                         "url"   => ["cms/admin-settings", "component" => 'skeeks\cms\reviews2\components\Reviews2Component'],
                         "img"       => ['\skeeks\cms\modules\admin\assets\AdminAsset', 'images/icons/settings.png'],
-                        "activeCallback"       => function(\skeeks\cms\modules\admin\helpers\AdminMenuItem $adminMenuItem)
+                        "activeCallback"       => function(\skeeks\cms\backend\BackendMenuItem $adminMenuItem)
                         {
                             return (bool) (\Yii::$app->request->getUrl() == $adminMenuItem->getUrl());
                         },

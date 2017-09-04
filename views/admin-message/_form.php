@@ -23,7 +23,7 @@ if (!$model->isNewRecord)
 <?= $form->fieldSet(\Yii::t('skeeks/reviews2','Basic information')); ?>
 
     <?= $form->field($model, 'element_id')->widget(
-        \skeeks\cms\modules\admin\widgets\formInputs\CmsContentElementInput::className()
+        \skeeks\cms\backend\widgets\SelectModelDialogContentElementWidget::class
     ); ?>
 
     <?= $form->field($model, 'rating')->radioList(\Yii::$app->reviews2->ratings); ?>

@@ -74,7 +74,7 @@
             'class' => \yii\grid\DataColumn::className(),
             'value' => function(\skeeks\cms\reviews2\models\Reviews2Message $model)
             {
-                return $model->element->cmsContent->name;
+                return ($model->element && $model->element->cmsContent) ? $model->element->cmsContent->name : '-';
             }
         ],
 

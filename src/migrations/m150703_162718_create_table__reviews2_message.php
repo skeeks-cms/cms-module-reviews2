@@ -10,7 +10,7 @@ use yii\db\Migration;
 
 class m150703_162718_create_table__reviews2_message extends Migration
 {
-    public function up()
+    public function safeUp()
     {
         $tableExist = $this->db->getTableSchema("{{%reviews2_message}}", true);
         if ($tableExist)
@@ -64,32 +64,23 @@ class m150703_162718_create_table__reviews2_message extends Migration
 
         ], $tableOptions);
 
-        $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(updated_by);");
-        $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(created_by);");
-
-        $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(created_at);");
-        $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(updated_at);");
-
-        $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(published_at);");
-
-        $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(processed_at);");
-        $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(processed_by);");
-
-        $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(status);");
-        $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(rating);");
-
-        $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(element_id);");
-        $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(content_id);");
-
-        $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(ip);");
-        $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(site_code);");
-
-        $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(user_name);");
-        $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(user_phone);");
-        $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(user_email);");
-        $this->execute("ALTER TABLE {{%reviews2_message}} ADD INDEX(user_city);");
-
-        $this->execute("ALTER TABLE {{%reviews2_message}} COMMENT = 'Отзывы';");
+        $this->createIndex('reviews2_message__updated_by', '{{%reviews2_message}}', 'updated_by');
+        $this->createIndex('reviews2_message__created_by', '{{%reviews2_message}}', 'created_by');
+        $this->createIndex('reviews2_message__created_at', '{{%reviews2_message}}', 'created_at');
+        $this->createIndex('reviews2_message__updated_at', '{{%reviews2_message}}', 'updated_at');
+        $this->createIndex('reviews2_message__published_at', '{{%reviews2_message}}', 'published_at');
+        $this->createIndex('reviews2_message__processed_at', '{{%reviews2_message}}', 'processed_at');
+        $this->createIndex('reviews2_message__processed_by', '{{%reviews2_message}}', 'processed_by');
+        $this->createIndex('reviews2_message__status', '{{%reviews2_message}}', 'status');
+        $this->createIndex('reviews2_message__rating', '{{%reviews2_message}}', 'rating');
+        $this->createIndex('reviews2_message__element_id', '{{%reviews2_message}}', 'element_id');
+        $this->createIndex('reviews2_message__content_id', '{{%reviews2_message}}', 'content_id');
+        $this->createIndex('reviews2_message__ip', '{{%reviews2_message}}', 'ip');
+        $this->createIndex('reviews2_message__site_code', '{{%reviews2_message}}', 'site_code');
+        $this->createIndex('reviews2_message__user_name', '{{%reviews2_message}}', 'user_name');
+        $this->createIndex('reviews2_message__user_phone', '{{%reviews2_message}}', 'user_phone');
+        $this->createIndex('reviews2_message__user_email', '{{%reviews2_message}}', 'user_email');
+        $this->createIndex('reviews2_message__user_city', '{{%reviews2_message}}', 'user_city');
 
         $this->addForeignKey(
             'reviews2_message_created_by', "{{%reviews2_message}}",

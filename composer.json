@@ -21,13 +21,13 @@
     },
     "autoload": {
         "psr-4": {
-            "skeeks\\cms\\reviews2\\": ""
+            "skeeks\\cms\\reviews2\\": "src/"
         }
     },
     "extra": {
         "config-plugin": {
-            "web": "config/main.php",
-            "console": "config/main-console.php"
+            "web": "src/config/main.php",
+            "console": "src/config/main-console.php"
         }
     }
 }

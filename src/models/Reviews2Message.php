@@ -63,10 +63,10 @@ class Reviews2Message extends \skeeks\cms\models\Core
     //Сценарий вставки отзыва с сайтовой части + captcha
     const SCENARIO_SITE_INSERT = 'siteInsert';
 
-    const STATUS_NEW            = 0;
-    const STATUS_PROCESSED      = 5;
-    const STATUS_ALLOWED        = 10;
-    const STATUS_CANCELED       = 15;
+    const STATUS_NEW = 0;
+    const STATUS_PROCESSED = 5;
+    const STATUS_ALLOWED = 10;
+    const STATUS_CANCELED = 15;
 
 
     /*static public $statuses =
@@ -80,10 +80,10 @@ class Reviews2Message extends \skeeks\cms\models\Core
     static public function getStatuses()
     {
         return [
-            self::STATUS_NEW                => \Yii::t('skeeks/reviews2',"New"),
-            self::STATUS_PROCESSED          => \Yii::t('skeeks/reviews2',"In Progress"),
-            self::STATUS_ALLOWED            => \Yii::t('skeeks/reviews2',"Approved"),
-            self::STATUS_CANCELED           => \Yii::t('skeeks/reviews2',"Rejected"),
+            self::STATUS_NEW => \Yii::t('skeeks/reviews2', "New"),
+            self::STATUS_PROCESSED => \Yii::t('skeeks/reviews2', "In Progress"),
+            self::STATUS_ALLOWED => \Yii::t('skeeks/reviews2', "Approved"),
+            self::STATUS_CANCELED => \Yii::t('skeeks/reviews2', "Rejected"),
         ];
     }
 
@@ -102,11 +102,11 @@ class Reviews2Message extends \skeeks\cms\models\Core
     {
         parent::init();
 
-        $this->on(BaseActiveRecord::EVENT_AFTER_INSERT,    [$this, "checkDataAfterSave"]);
-        $this->on(BaseActiveRecord::EVENT_AFTER_UPDATE,    [$this, "checkDataAfterSave"]);
+        $this->on(BaseActiveRecord::EVENT_AFTER_INSERT, [$this, "checkDataAfterSave"]);
+        $this->on(BaseActiveRecord::EVENT_AFTER_UPDATE, [$this, "checkDataAfterSave"]);
 
-        $this->on(BaseActiveRecord::EVENT_BEFORE_INSERT,    [$this, "checkDataBeforeSave"]);
-        $this->on(BaseActiveRecord::EVENT_BEFORE_UPDATE,    [$this, "checkDataBeforeSave"]);
+        $this->on(BaseActiveRecord::EVENT_BEFORE_INSERT, [$this, "checkDataBeforeSave"]);
+        $this->on(BaseActiveRecord::EVENT_BEFORE_UPDATE, [$this, "checkDataBeforeSave"]);
     }
 
     /**
@@ -116,11 +116,11 @@ class Reviews2Message extends \skeeks\cms\models\Core
      */
     public function checkDataBeforeSave()
     {
-        if ($this->element)
-        {
+        if ($this->element) {
             $this->content_id = $this->element->cmsContent->id;
         }
     }
+
     /**
      * После сохранения или обновления рейтинга, нужно обновить элемент.
      *
@@ -128,58 +128,49 @@ class Reviews2Message extends \skeeks\cms\models\Core
      */
     public function checkDataAfterSave()
     {
-        if (!$this->element)
-        {
+        if (!$this->element) {
             return;
         }
 
         $relatedPropertiesModel = $this->element->relatedPropertiesModel;
 
-        if (!$relatedPropertiesModel)
-        {
+        if (!$relatedPropertiesModel) {
             return;
         }
 
         //Выбор всех отзывов принятых к этому элементу, для рассчета рейтинга.
-        $messages   = static::find()->where(['element_id' => $this->element->id])->andWhere(['status' => static::STATUS_ALLOWED])->all();
+        $messages = static::find()->where(['element_id' => $this->element->id])->andWhere(['status' => static::STATUS_ALLOWED])->all();
 
-        $count              = 0;
-        $ratingSumm         = 0;
+        $count = 0;
+        $ratingSumm = 0;
 
         /**
          * @var self $message
          */
-        foreach ($messages as $message)
-        {
-            $count ++;
+        foreach ($messages as $message) {
+            $count++;
             $ratingSumm = $ratingSumm + $message->rating;
         }
 
-        if (!$count)
-        {
-            return ;
+        if (!$count) {
+            return;
         }
 
         $ratingAll = ($ratingSumm / $count);
 
-        if (\Yii::$app->reviews2->elementPropertyCountCode)
-        {
-            if ($relatedPropertiesModel->hasAttribute(\Yii::$app->reviews2->elementPropertyCountCode))
-            {
+        if (\Yii::$app->reviews2->elementPropertyCountCode) {
+            if ($relatedPropertiesModel->hasAttribute(\Yii::$app->reviews2->elementPropertyCountCode)) {
                 $relatedPropertiesModel->setAttribute(\Yii::$app->reviews2->elementPropertyCountCode, $count);
             }
         }
 
-        if (\Yii::$app->reviews2->elementPropertyRatingCode)
-        {
-            if ($relatedPropertiesModel->hasAttribute(\Yii::$app->reviews2->elementPropertyRatingCode))
-            {
+        if (\Yii::$app->reviews2->elementPropertyRatingCode) {
+            if ($relatedPropertiesModel->hasAttribute(\Yii::$app->reviews2->elementPropertyRatingCode)) {
                 $relatedPropertiesModel->setAttribute(\Yii::$app->reviews2->elementPropertyRatingCode, $ratingAll);
             }
         }
 
-        if (!$relatedPropertiesModel->save())
-        {
+        if (!$relatedPropertiesModel->save()) {
             \Yii::error(\Yii::t('skeeks/reviews2', 'Could not save data on the number of comments in the content element.') . " " . Json::encode($relatedPropertiesModel->errors) . " — " . Json::encode($relatedPropertiesModel->toArray()), static::className());
         };
     }
@@ -194,10 +185,10 @@ class Reviews2Message extends \skeeks\cms\models\Core
 
             TimestampPublishedBehavior::className() => TimestampPublishedBehavior::className(),
             Serialize::className() =>
-            [
-                'class' => Serialize::className(),
-                'fields' => ['data_server', 'data_session', 'data_cookie', 'data_request']
-            ],
+                [
+                    'class' => Serialize::className(),
+                    'fields' => ['data_server', 'data_session', 'data_cookie', 'data_request']
+                ],
 
         ]);
     }
@@ -207,12 +198,13 @@ class Reviews2Message extends \skeeks\cms\models\Core
      */
     public function scenarios()
     {
-        $result                                 = parent::scenarios();
-        $result[self::SCENARIO_SITE_INSERT]     = ArrayHelper::merge($result[self::SCENARIO_DEFAULT], [
+        $result = parent::scenarios();
+        $result[self::SCENARIO_SITE_INSERT] = ArrayHelper::merge($result[self::SCENARIO_DEFAULT], [
             'verifyCode'
         ]);
         return $result;
     }
+
     /**
      * @inheritdoc
      */
@@ -222,7 +214,7 @@ class Reviews2Message extends \skeeks\cms\models\Core
             [['created_by', 'updated_by', 'created_at', 'updated_at', 'element_id', 'content_id', 'status'], 'integer'],
             [['element_id', 'rating'], 'required'],
             [['dignity', 'disadvantages', 'comments'], 'string'],
-            [['rating'], 'integer', 'min' => 1, 'max' => (int) \Yii::$app->reviews2->maxValue],
+            [['rating'], 'integer', 'min' => 1, 'max' => (int)\Yii::$app->reviews2->maxValue],
             [['ip'], 'string', 'max' => 32],
             [['page_url'], 'string'],
             [['site_code'], 'string', 'max' => 15],
@@ -241,24 +233,19 @@ class Reviews2Message extends \skeeks\cms\models\Core
             ['data_request', 'default', 'value' => $_REQUEST],
             ['data_server', 'default', 'value' => $_SERVER],
             ['data_cookie', 'default', 'value' => $_COOKIE],
-            ['data_session', 'default', 'value' => function(self $model, $attribute)
-            {
-                if (\Yii::$app instanceof Application)
-                {
+            ['data_session', 'default', 'value' => function (self $model, $attribute) {
+                if (\Yii::$app instanceof Application) {
                     \Yii::$app->session->open();
                     return $_SESSION;
                 }
 
                 return [];
             }],
-            ['content_id', 'default', 'value' => function(self $model, $attribute)
-            {
+            ['content_id', 'default', 'value' => function (self $model, $attribute) {
                 return $model->element->cmsContent->id;
             }],
-            ['ip', 'default', 'value' => function($model)
-            {
-                if (\Yii::$app instanceof Application)
-                {
+            ['ip', 'default', 'value' => function ($model) {
+                if (\Yii::$app instanceof Application) {
                     return \Yii::$app->request->userIP;
                 }
 
@@ -269,21 +256,19 @@ class Reviews2Message extends \skeeks\cms\models\Core
                 'verifyCode',
                 \yii\captcha\CaptchaValidator::className(),
                 'captchaAction' => 'reviews2/backend/captcha',
-                'skipOnEmpty'   =>  $this->_skipOnEmptyVerifyCode(),
-                'on'            => self::SCENARIO_SITE_INSERT
+                'skipOnEmpty' => $this->_skipOnEmptyVerifyCode(),
+                'on' => self::SCENARIO_SITE_INSERT
             ],
         ];
     }
 
     protected function _skipOnEmptyVerifyCode()
     {
-        if (\Yii::$app instanceof Application && \Yii::$app->user->isGuest && in_array('verifyCode', \Yii::$app->reviews2->enabledFieldsOnGuest))
-        {
+        if (\Yii::$app instanceof Application && \Yii::$app->user->isGuest && in_array('verifyCode', \Yii::$app->reviews2->enabledFieldsOnGuest)) {
             return false;
         }
 
-        if (\Yii::$app instanceof Application && !\Yii::$app->user->isGuest && in_array('verifyCode', \Yii::$app->reviews2->enabledFieldsOnUser))
-        {
+        if (\Yii::$app instanceof Application && !\Yii::$app->user->isGuest && in_array('verifyCode', \Yii::$app->reviews2->enabledFieldsOnUser)) {
             return false;
         }
 
@@ -334,6 +319,7 @@ class Reviews2Message extends \skeeks\cms\models\Core
             ''
         ]);
     }
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -391,24 +377,20 @@ class Reviews2Message extends \skeeks\cms\models\Core
     }
 
 
-
-
     /**
      * Уведомить всех кого надо и как надо
      */
     public function notifyCreate()
     {
-        if (\Yii::$app->reviews2->notifyEmails)
-        {
-            foreach (\Yii::$app->reviews2->notifyEmails as $email)
-            {
+        if (\Yii::$app->reviews2->notifyEmails) {
+            foreach (\Yii::$app->reviews2->notifyEmails as $email) {
                 \Yii::$app->mailer->compose('@skeeks/cms/reviews2/mail/new-message', [
-                    'model'          => $this
+                    'model' => $this
                 ])
-                ->setFrom([\Yii::$app->cms->adminEmail => \Yii::$app->cms->appName])
-                ->setTo($email)
-                ->setSubject(\Yii::t('skeeks/reviews2',"Added a new review")." #" . $this->id)
-                ->send();
+                    ->setFrom([\Yii::$app->cms->adminEmail => \Yii::$app->cms->appName])
+                    ->setTo($email)
+                    ->setSubject(\Yii::t('skeeks/reviews2', "Added a new review") . " #" . $this->id)
+                    ->send();
             }
         }
     }

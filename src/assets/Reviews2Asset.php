@@ -5,7 +5,9 @@
  * @copyright 2010 SkeekS (СкикС)
  * @date 14.07.2015
  */
+
 namespace skeeks\cms\reviews2\assets;
+
 use yii\web\AssetBundle;
 
 /**

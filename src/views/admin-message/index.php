@@ -12,36 +12,31 @@
 
 <? $pjax = \skeeks\cms\modules\admin\widgets\Pjax::begin(); ?>
 
-    <?php echo $this->render('_search', [
-        'searchModel'   => $searchModel,
-        'dataProvider'  => $dataProvider
-    ]); ?>
+<?php echo $this->render('_search', [
+    'searchModel' => $searchModel,
+    'dataProvider' => $dataProvider
+]); ?>
 
 <?= \skeeks\cms\modules\admin\widgets\GridViewStandart::widget([
-    'dataProvider'      => $dataProvider,
-    'filterModel'       => $searchModel,
-    'adminController'   => $controller,
-    'pjax'              => $pjax,
-    'isOpenNewWindow'   => @$isOpenNewWindow ? true : false,
+    'dataProvider' => $dataProvider,
+    'filterModel' => $searchModel,
+    'adminController' => $controller,
+    'pjax' => $pjax,
+    'isOpenNewWindow' => @$isOpenNewWindow ? true : false,
     'columns' => [
         [
             'attribute' => 'status',
             'class' => \yii\grid\DataColumn::className(),
             'filter' => \skeeks\cms\reviews2\models\Reviews2Message::getStatuses(),
             'format' => 'raw',
-            'value' => function(\skeeks\cms\reviews2\models\Reviews2Message $model)
-            {
-                if ($model->status == \skeeks\cms\reviews2\models\Reviews2Message::STATUS_NEW)
-                {
+            'value' => function (\skeeks\cms\reviews2\models\Reviews2Message $model) {
+                if ($model->status == \skeeks\cms\reviews2\models\Reviews2Message::STATUS_NEW) {
                     $class = "default";
-                } else if ($model->status == \skeeks\cms\reviews2\models\Reviews2Message::STATUS_PROCESSED)
-                {
+                } else if ($model->status == \skeeks\cms\reviews2\models\Reviews2Message::STATUS_PROCESSED) {
                     $class = "warning";
-                }  else if ($model->status == \skeeks\cms\reviews2\models\Reviews2Message::STATUS_CANCELED)
-                {
+                } else if ($model->status == \skeeks\cms\reviews2\models\Reviews2Message::STATUS_CANCELED) {
                     $class = "danger";
-                } else if ($model->status == \skeeks\cms\reviews2\models\Reviews2Message::STATUS_ALLOWED)
-                {
+                } else if ($model->status == \skeeks\cms\reviews2\models\Reviews2Message::STATUS_ALLOWED) {
                     $class = "success";
                 }
 
@@ -52,7 +47,7 @@
 
         [
             'class' => \skeeks\cms\grid\CreatedAtColumn::className(),
-            'label' => \Yii::t('skeeks/reviews2','Added')
+            'label' => \Yii::t('skeeks/reviews2', 'Added')
         ],
         [
             'class' => \skeeks\cms\grid\CreatedByColumn::className(),
@@ -72,8 +67,7 @@
             'filter' => \skeeks\cms\models\CmsContent::getDataForSelect(),
             'attribute' => 'content_id',
             'class' => \yii\grid\DataColumn::className(),
-            'value' => function(\skeeks\cms\reviews2\models\Reviews2Message $model)
-            {
+            'value' => function (\skeeks\cms\reviews2\models\Reviews2Message $model) {
                 return ($model->element && $model->element->cmsContent) ? $model->element->cmsContent->name : '-';
             }
         ],

@@ -30,99 +30,99 @@ class Reviews2Widget extends WidgetRenderable
     static public function descriptorConfig()
     {
         return array_merge(parent::descriptorConfig(), [
-            'name' => \Yii::t('skeeks/reviews2','Widget reviews')
+            'name' => \Yii::t('skeeks/reviews2', 'Widget reviews')
         ]);
     }
 
 
     //Навигация
-    public $enabledPaging               = CMS::BOOL_Y;
-    public $enabledPjaxPagination       = CMS::BOOL_Y;
+    public $enabledPaging = CMS::BOOL_Y;
+    public $enabledPjaxPagination = CMS::BOOL_Y;
 
-    public $pageSize                    = 100;
-    public $pageParamName               = 'review2';
+    public $pageSize = 100;
+    public $pageParamName = 'review2';
 
     //Сортировка
-    public $orderBy                     = "published_at";
-    public $order                       = SORT_DESC;
+    public $orderBy = "published_at";
+    public $order = SORT_DESC;
 
     //Дополнительные настройки
-    public $label                       = "";
+    public $label = "";
 
     //Условия для запроса
-    public $limit                       = 0;
-    public $statuses                    = [Reviews2Message::STATUS_ALLOWED];
-    public $site_codes                    = [];
-    public $createdBy                    = [];
+    public $limit = 0;
+    public $statuses = [Reviews2Message::STATUS_ALLOWED];
+    public $site_codes = [];
+    public $createdBy = [];
 
 
-    public $btnSubmit       = "";
-    public $btnSubmitClass  = 'btn btn-primary';
+    public $btnSubmit = "";
+    public $btnSubmitClass = 'btn btn-primary';
 
     public function init()
     {
-        if(!$this->btnSubmit) $this->btnSubmit = \Yii::t('skeeks/reviews2','Add a review');
+        if (!$this->btnSubmit) $this->btnSubmit = \Yii::t('skeeks/reviews2', 'Add a review');
         parent::init();
     }
 
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(),
-        [
-            'btnSubmit'         => \Yii::t('skeeks/reviews2','The inscription on the button to send the form'),
-            'btnSubmitClass'    => \Yii::t('skeeks/reviews2','Class form submit button'),
+            [
+                'btnSubmit' => \Yii::t('skeeks/reviews2', 'The inscription on the button to send the form'),
+                'btnSubmitClass' => \Yii::t('skeeks/reviews2', 'Class form submit button'),
 
 
-            'enabledPaging'             => \Yii::t('skeeks/reviews2','Enable pagination'),
-            'enabledPjaxPagination'     => \Yii::t('skeeks/reviews2','Enable ajax navigation'),
-            'pageParamName'             => \Yii::t('skeeks/reviews2','Names of pages parameter for pagination'),
-            'pageSize'                  => \Yii::t('skeeks/reviews2','Number of records on one page'),
+                'enabledPaging' => \Yii::t('skeeks/reviews2', 'Enable pagination'),
+                'enabledPjaxPagination' => \Yii::t('skeeks/reviews2', 'Enable ajax navigation'),
+                'pageParamName' => \Yii::t('skeeks/reviews2', 'Names of pages parameter for pagination'),
+                'pageSize' => \Yii::t('skeeks/reviews2', 'Number of records on one page'),
 
-            'orderBy'                   => \Yii::t('skeeks/reviews2','Order by'),
-            'order'                     => \Yii::t('skeeks/reviews2','Sorting direction'),
+                'orderBy' => \Yii::t('skeeks/reviews2', 'Order by'),
+                'order' => \Yii::t('skeeks/reviews2', 'Sorting direction'),
 
-            'label'                     => \Yii::t('skeeks/reviews2','Label'),
+                'label' => \Yii::t('skeeks/reviews2', 'Label'),
 
-            'limit'                     => \Yii::t('skeeks/reviews2','The maximum number of entries in the sample (limit)'),
-            'statuses'                  => \Yii::t('skeeks/reviews2','Consider statuses'),
-            'site_codes'                => \Yii::t('skeeks/reviews2','Consider sites'),
-            'createdBy'                 => \Yii::t('skeeks/reviews2','Created By'),
+                'limit' => \Yii::t('skeeks/reviews2', 'The maximum number of entries in the sample (limit)'),
+                'statuses' => \Yii::t('skeeks/reviews2', 'Consider statuses'),
+                'site_codes' => \Yii::t('skeeks/reviews2', 'Consider sites'),
+                'createdBy' => \Yii::t('skeeks/reviews2', 'Created By'),
 
-        ]);
+            ]);
     }
 
     public function rules()
     {
         return ArrayHelper::merge(parent::rules(),
-        [
+            [
 
-            ['btnSubmit', 'string'],
-            ['btnSubmitClass', 'string'],
+                ['btnSubmit', 'string'],
+                ['btnSubmitClass', 'string'],
 
-            ['enabledPaging', 'string'],
-            ['enabledPjaxPagination', 'string'],
-            ['pageParamName', 'string'],
-            ['pageSize', 'string'],
+                ['enabledPaging', 'string'],
+                ['enabledPjaxPagination', 'string'],
+                ['pageParamName', 'string'],
+                ['pageSize', 'string'],
 
-            ['orderBy', 'string'],
-            ['order', 'integer'],
+                ['orderBy', 'string'],
+                ['order', 'integer'],
 
-            ['label', 'string'],
+                ['label', 'string'],
 
-            ['limit', 'integer'],
-            ['statuses', 'safe'],
-            ['site_codes', 'safe'],
-            ['createdBy', 'safe'],
+                ['limit', 'integer'],
+                ['statuses', 'safe'],
+                ['site_codes', 'safe'],
+                ['createdBy', 'safe'],
 
 
-        ]);
+            ]);
     }
 
 
     public function renderConfigForm(ActiveForm $form)
     {
         echo \Yii::$app->view->renderFile(__DIR__ . '/_form.php', [
-            'form'  => $form,
+            'form' => $form,
             'model' => $this
         ], $this);
     }
@@ -142,28 +142,23 @@ class Reviews2Widget extends WidgetRenderable
     {
         $this->initDataProvider();
 
-        if ($this->createdBy)
-        {
+        if ($this->createdBy) {
             $this->dataProvider->query->andWhere([Reviews2Message::tableName() . '.created_by' => $this->createdBy]);
         }
 
-        if ($this->site_codes)
-        {
+        if ($this->site_codes) {
             $this->dataProvider->query->andWhere([Reviews2Message::tableName() . '.site_code' => $this->site_codes]);
         }
 
-        if ($this->statuses)
-        {
+        if ($this->statuses) {
             $this->dataProvider->query->andWhere([Reviews2Message::tableName() . '.status' => $this->statuses]);
         }
 
-        if ($this->cmsContentElement)
-        {
+        if ($this->cmsContentElement) {
             $this->dataProvider->query->andWhere([Reviews2Message::tableName() . '.element_id' => $this->cmsContentElement->id]);
         }
 
-        if ($this->limit)
-        {
+        if ($this->limit) {
             $this->dataProvider->query->limit($this->limit);
         }
 
@@ -176,33 +171,30 @@ class Reviews2Widget extends WidgetRenderable
     /**
      * @var ActiveDataProvider
      */
-    public $dataProvider    = null;
+    public $dataProvider = null;
 
     /**
      * @var Search
      */
-    public $search          = null;
+    public $search = null;
 
     public function initDataProvider()
     {
-        $this->search         = new Search(Reviews2Message::className());
-        $this->dataProvider   = $this->search->getDataProvider();
+        $this->search = new Search(Reviews2Message::className());
+        $this->dataProvider = $this->search->getDataProvider();
 
-        if ($this->enabledPaging == Cms::BOOL_Y)
-        {
-            $this->dataProvider->getPagination()->defaultPageSize   = $this->pageSize;
-            $this->dataProvider->getPagination()->pageParam         = $this->pageParamName;
-        } else
-        {
+        if ($this->enabledPaging == Cms::BOOL_Y) {
+            $this->dataProvider->getPagination()->defaultPageSize = $this->pageSize;
+            $this->dataProvider->getPagination()->pageParam = $this->pageParamName;
+        } else {
             $this->dataProvider->pagination = false;
         }
 
-        if ($this->orderBy)
-        {
+        if ($this->orderBy) {
             $this->dataProvider->getSort()->defaultOrder =
-            [
-                $this->orderBy => (int) $this->order
-            ];
+                [
+                    $this->orderBy => (int)$this->order
+                ];
         }
 
         return $this;

@@ -19,7 +19,7 @@ return [
     'Approved' => 'Допущен',
     'Rejected' => 'Отклонен',
     'Published At' => 'Время публикации',
-    'Element'=> 'Элемент',
+    'Element' => 'Элемент',
     'Content type' => 'Тип контента',
     'Site' => 'Сайт',
     'Name' => 'Имя',

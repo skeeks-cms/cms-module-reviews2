@@ -7,13 +7,15 @@
  */
 
 namespace yii\web;
+
 use skeeks\cms\reviews2\components\Reviews2Component;
 
 /**
- * @property Reviews2Component                 $reviews2
+ * @property Reviews2Component $reviews2
  *
  * Class Application
  * @package yii\web
  */
 class Application
-{}
+{
+}

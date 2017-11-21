@@ -5,7 +5,9 @@
  * @copyright 2010 SkeekS (СкикС)
  * @date 14.07.2015
  */
+
 namespace skeeks\cms\reviews2\actions;
+
 use skeeks\cms\modules\admin\actions\modelEditor\AdminOneModelEditAction;
 
 /**
@@ -23,11 +25,11 @@ class AdminOneModelMessagesAction extends AdminOneModelEditAction
     protected function render($viewName)
     {
         $this->viewParams =
-        [
-            'model' => $this->controller->model
-        ];
+            [
+                'model' => $this->controller->model
+            ];
 
-        return $this->controller->render("@skeeks/cms/reviews2/actions/views/messages", (array) $this->viewParams);
+        return $this->controller->render("@skeeks/cms/reviews2/actions/views/messages", (array)$this->viewParams);
     }
 
 }

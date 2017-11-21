@@ -5,6 +5,7 @@
  * @copyright 2010 SkeekS (СкикС)
  * @date 03.07.2015
  */
+
 namespace skeeks\cms\reviews2;
 /**
  * Class Module

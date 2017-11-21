@@ -5,16 +5,16 @@
  * @copyright 2010 SkeekS (СкикС)
  * @date 03.07.2015
  */
-use yii\db\Schema;
+
 use yii\db\Migration;
+use yii\db\Schema;
 
 class m150703_162718_create_table__reviews2_message extends Migration
 {
     public function safeUp()
     {
         $tableExist = $this->db->getTableSchema("{{%reviews2_message}}", true);
-        if ($tableExist)
-        {
+        if ($tableExist) {
             return true;
         }
 
@@ -24,43 +24,43 @@ class m150703_162718_create_table__reviews2_message extends Migration
         }
 
         $this->createTable("{{%reviews2_message}}", [
-            'id'                    => Schema::TYPE_PK,
+            'id' => Schema::TYPE_PK,
 
-            'created_by'            => Schema::TYPE_INTEGER . ' NULL',
-            'updated_by'            => Schema::TYPE_INTEGER . ' NULL',
+            'created_by' => Schema::TYPE_INTEGER . ' NULL',
+            'updated_by' => Schema::TYPE_INTEGER . ' NULL',
 
-            'created_at'            => Schema::TYPE_INTEGER . ' NULL',
-            'updated_at'            => Schema::TYPE_INTEGER . ' NULL',
-            'published_at'          => Schema::TYPE_INTEGER . ' NULL',
+            'created_at' => Schema::TYPE_INTEGER . ' NULL',
+            'updated_at' => Schema::TYPE_INTEGER . ' NULL',
+            'published_at' => Schema::TYPE_INTEGER . ' NULL',
 
-            'processed_by'          => Schema::TYPE_INTEGER . ' NULL', //пользователь который принял заявку
-            'processed_at'          => Schema::TYPE_INTEGER . ' NULL', //пользователь который принял заявку
+            'processed_by' => Schema::TYPE_INTEGER . ' NULL', //пользователь который принял заявку
+            'processed_at' => Schema::TYPE_INTEGER . ' NULL', //пользователь который принял заявку
 
-            'element_id'            => Schema::TYPE_INTEGER . ' NOT NULL',
-            'content_id'            => Schema::TYPE_INTEGER . ' NULL',
+            'element_id' => Schema::TYPE_INTEGER . ' NOT NULL',
+            'content_id' => Schema::TYPE_INTEGER . ' NULL',
 
-            'dignity'               => Schema::TYPE_TEXT . ' NULL',
-            'disadvantages'         => Schema::TYPE_TEXT . ' NULL',
-            'comments'              => Schema::TYPE_TEXT . ' NULL',
+            'dignity' => Schema::TYPE_TEXT . ' NULL',
+            'disadvantages' => Schema::TYPE_TEXT . ' NULL',
+            'comments' => Schema::TYPE_TEXT . ' NULL',
 
-            'rating'                => Schema::TYPE_INTEGER . ' NOT NULL',
+            'rating' => Schema::TYPE_INTEGER . ' NOT NULL',
 
-            'status'                => Schema::TYPE_SMALLINT . ' NOT NULL DEFAULT 0', //статус, активна некативна, удалено
+            'status' => Schema::TYPE_SMALLINT . ' NOT NULL DEFAULT 0', //статус, активна некативна, удалено
 
-            'ip'                    => Schema::TYPE_STRING . '(32) NULL',
-            'page_url'              => Schema::TYPE_TEXT . ' NULL',
+            'ip' => Schema::TYPE_STRING . '(32) NULL',
+            'page_url' => Schema::TYPE_TEXT . ' NULL',
 
-            'data_server'           => Schema::TYPE_TEXT . ' NULL',
-            'data_session'          => Schema::TYPE_TEXT . ' NULL',
-            'data_cookie'           => Schema::TYPE_TEXT . ' NULL',
-            'data_request'          => Schema::TYPE_TEXT . ' NULL',
+            'data_server' => Schema::TYPE_TEXT . ' NULL',
+            'data_session' => Schema::TYPE_TEXT . ' NULL',
+            'data_cookie' => Schema::TYPE_TEXT . ' NULL',
+            'data_request' => Schema::TYPE_TEXT . ' NULL',
 
-            'site_code'             => "CHAR(15) NULL",
+            'site_code' => "CHAR(15) NULL",
 
-            'user_name'                 => Schema::TYPE_STRING . '(255) NULL',
-            'user_email'                => Schema::TYPE_STRING . '(255) NULL',
-            'user_phone'                => Schema::TYPE_STRING . '(255) NULL',
-            'user_city'                 => Schema::TYPE_STRING . '(255) NULL',
+            'user_name' => Schema::TYPE_STRING . '(255) NULL',
+            'user_email' => Schema::TYPE_STRING . '(255) NULL',
+            'user_phone' => Schema::TYPE_STRING . '(255) NULL',
+            'user_city' => Schema::TYPE_STRING . '(255) NULL',
 
         ], $tableOptions);
 

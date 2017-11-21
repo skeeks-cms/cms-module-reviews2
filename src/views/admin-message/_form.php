@@ -1,14 +1,13 @@
 <?php
 
-use yii\helpers\Html;
 use skeeks\cms\modules\admin\widgets\form\ActiveFormUseTab as ActiveForm;
+use yii\helpers\Html;
+
 /* @var $this yii\web\View */
 /* @var $action \skeeks\cms\modules\admin\actions\modelEditor\AdminOneModelEditAction */
 /* @var $model \skeeks\cms\reviews2\models\Reviews2Message */
-if (!$model->isNewRecord)
-{
-    if ($model->status == \skeeks\cms\reviews2\models\Reviews2Message::STATUS_NEW && !$model->processed_by)
-    {
+if (!$model->isNewRecord) {
+    if ($model->status == \skeeks\cms\reviews2\models\Reviews2Message::STATUS_NEW && !$model->processed_by) {
         $model->processed_by = \Yii::$app->user->identity->id;
         $model->processed_at = \Yii::$app->formatter->asTimestamp(time());
         $model->status = \skeeks\cms\reviews2\models\Reviews2Message::STATUS_PROCESSED;
@@ -20,58 +19,58 @@ if (!$model->isNewRecord)
 
 <? $form = ActiveForm::begin(); ?>
 
-<?= $form->fieldSet(\Yii::t('skeeks/reviews2','Basic information')); ?>
+<?= $form->fieldSet(\Yii::t('skeeks/reviews2', 'Basic information')); ?>
 
-    <?= $form->field($model, 'element_id')->widget(
-        \skeeks\cms\backend\widgets\SelectModelDialogContentElementWidget::class
-    ); ?>
+<?= $form->field($model, 'element_id')->widget(
+    \skeeks\cms\backend\widgets\SelectModelDialogContentElementWidget::class
+); ?>
 
-    <?= $form->field($model, 'rating')->radioList(\Yii::$app->reviews2->ratings); ?>
-    <?= $form->field($model, 'comments')->textarea(['rows' => 5]); ?>
-    <?= $form->field($model, 'dignity')->textarea(['rows' => 5]); ?>
-    <?= $form->field($model, 'disadvantages')->textarea(['rows' => 5]); ?>
+<?= $form->field($model, 'rating')->radioList(\Yii::$app->reviews2->ratings); ?>
+<?= $form->field($model, 'comments')->textarea(['rows' => 5]); ?>
+<?= $form->field($model, 'dignity')->textarea(['rows' => 5]); ?>
+<?= $form->field($model, 'disadvantages')->textarea(['rows' => 5]); ?>
 
 <?= $form->fieldSetEnd(); ?>
 
-<?= $form->fieldSet(\Yii::t('skeeks/reviews2','Author')); ?>
-    <?= $form->fieldSelect($model, 'created_by', \yii\helpers\ArrayHelper::map(
-            \skeeks\cms\models\User::find()->active()->all(),
-            'id',
-            'displayName'
-        )) ?>
+<?= $form->fieldSet(\Yii::t('skeeks/reviews2', 'Author')); ?>
+<?= $form->fieldSelect($model, 'created_by', \yii\helpers\ArrayHelper::map(
+    \skeeks\cms\models\User::find()->active()->all(),
+    'id',
+    'displayName'
+)) ?>
 
-    <?= $form->field($model, 'user_name')->textInput(); ?>
-    <?= $form->field($model, 'user_email')->textInput(); ?>
-    <?= $form->field($model, 'user_phone')->textInput(); ?>
-    <?= $form->field($model, 'user_city')->textInput(); ?>
+<?= $form->field($model, 'user_name')->textInput(); ?>
+<?= $form->field($model, 'user_email')->textInput(); ?>
+<?= $form->field($model, 'user_phone')->textInput(); ?>
+<?= $form->field($model, 'user_city')->textInput(); ?>
 <?= $form->fieldSetEnd(); ?>
 
-<?= $form->fieldSet(\Yii::t('skeeks/reviews2','Processing')); ?>
-    <?= $form->fieldSelect($model, 'status', \skeeks\cms\reviews2\models\Reviews2Message::getStatuses()); ?>
+<?= $form->fieldSet(\Yii::t('skeeks/reviews2', 'Processing')); ?>
+<?= $form->fieldSelect($model, 'status', \skeeks\cms\reviews2\models\Reviews2Message::getStatuses()); ?>
 
-    <?= $form->fieldSelect($model, 'processed_by', \yii\helpers\ArrayHelper::map(
-            \skeeks\cms\models\User::find()->active()->all(),
-            'id',
-            'displayName'
-        )); ?>
+<?= $form->fieldSelect($model, 'processed_by', \yii\helpers\ArrayHelper::map(
+    \skeeks\cms\models\User::find()->active()->all(),
+    'id',
+    'displayName'
+)); ?>
 
-    <?= $form->field($model, 'published_at')->widget(\kartik\datecontrol\DateControl::classname(), [
-        //'displayFormat' => 'php:d-M-Y H:i:s',
-        'type' => \kartik\datecontrol\DateControl::FORMAT_DATETIME,
-    ]); ?>
+<?= $form->field($model, 'published_at')->widget(\kartik\datecontrol\DateControl::classname(), [
+    //'displayFormat' => 'php:d-M-Y H:i:s',
+    'type' => \kartik\datecontrol\DateControl::FORMAT_DATETIME,
+]); ?>
 
 
 <?= $form->fieldSetEnd(); ?>
 
 <? if (!$model->isNewRecord) : ?>
-    <?= $form->fieldSet(\Yii::t('skeeks/reviews2','Additional information')); ?>
-        <?= \yii\widgets\DetailView::widget([
-            'model'         => $model,
-            'attributes'    =>
+    <?= $form->fieldSet(\Yii::t('skeeks/reviews2', 'Additional information')); ?>
+    <?= \yii\widgets\DetailView::widget([
+        'model' => $model,
+        'attributes' =>
             [
                 [
-                    'attribute'     => 'id',
-                    'label'         => \Yii::t('skeeks/reviews2','Message number'),
+                    'attribute' => 'id',
+                    'label' => \Yii::t('skeeks/reviews2', 'Message number'),
                 ],
 
                 [
@@ -81,49 +80,51 @@ if (!$model->isNewRecord)
 
                 [
                     'format' => 'raw',
-                    'label' => \Yii::t('skeeks/reviews2','Sent from site'),
+                    'label' => \Yii::t('skeeks/reviews2', 'Sent from site'),
                     'value' => "<a href=\"{$model->site->url}\" target=\"_blank\" data-pjax=\"0\">{$model->site->name}</a>",
                 ],
 
                 [
                     'format' => 'raw',
-                    'label' => \Yii::t('skeeks/reviews2','Sender'),
+                    'label' => \Yii::t('skeeks/reviews2', 'Sender'),
                     'value' => $model->createdBy ? "{$model->createdBy->displayName}" : " - ",
                 ],
 
                 [
                     'attribute' => 'ip',
-                    'label' => \Yii::t('skeeks/reviews2','Ip address of the sender'),
+                    'label' => \Yii::t('skeeks/reviews2', 'Ip address of the sender'),
                 ],
 
                 [
                     'attribute' => 'page_url',
                     'format' => 'raw',
-                    'label' => \Yii::t('skeeks/reviews2','Sent from the page'),
+                    'label' => \Yii::t('skeeks/reviews2', 'Sent from the page'),
                     'value' => Html::a($model->page_url, $model->page_url, [
                         'target' => '_blank',
                         'data-pjax' => 0
                     ])
                 ],
             ]
-        ]); ?>
+    ]); ?>
 
     <?= $form->fieldSetEnd(); ?>
 
 
 
-    <?= $form->fieldSet(\Yii::t('skeeks/reviews2','For developers')); ?>
+    <?= $form->fieldSet(\Yii::t('skeeks/reviews2', 'For developers')); ?>
 
     <div class="sx-block">
-      <h3><?=\Yii::t('skeeks/reviews2','Additional information that may be useful in some cases, the developers.');?></h3>
-      <small><?=\Yii::t('skeeks/reviews2','For the convenience of viewing the data, you can use the service');?>: <a href="http://jsonformatter.curiousconcept.com/#" target="_blank">http://jsonformatter.curiousconcept.com/#</a></small>
+        <h3><?= \Yii::t('skeeks/reviews2', 'Additional information that may be useful in some cases, the developers.'); ?></h3>
+        <small><?= \Yii::t('skeeks/reviews2', 'For the convenience of viewing the data, you can use the service'); ?>:
+            <a href="http://jsonformatter.curiousconcept.com/#" target="_blank">http://jsonformatter.curiousconcept.com/#</a>
+        </small>
     </div>
-    <hr />
+    <hr/>
 
 
-        <?= \yii\widgets\DetailView::widget([
-            'model'         => $model,
-            'attributes'    =>
+    <?= \yii\widgets\DetailView::widget([
+        'model' => $model,
+        'attributes' =>
             [
                 [
                     'attribute' => 'data_server',
@@ -154,7 +155,7 @@ if (!$model->isNewRecord)
                 ],
 
             ]
-        ]); ?>
+    ]); ?>
 
     <?= $form->fieldSetEnd(); ?>
 <? endif; ?>

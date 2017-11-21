@@ -16,9 +16,9 @@ $dataProvider->query->andWhere(['element_id' => $model->id]);
 ?>
 
 <?= $this->render('@skeeks/cms/reviews2/views/admin-message/index', [
-    'dataProvider'  => $dataProvider,
-    'searchModel'   => $search->getLoadedModel(),
-    'controller'    => \Yii::$app->createController('/reviews2/admin-message')[0],
-    'isOpenNewWindow'    => true
+    'dataProvider' => $dataProvider,
+    'searchModel' => $search->getLoadedModel(),
+    'controller' => \Yii::$app->createController('/reviews2/admin-message')[0],
+    'isOpenNewWindow' => true
 ]);
 ?>

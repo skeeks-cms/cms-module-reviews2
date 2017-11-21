@@ -17,17 +17,16 @@ $filter->addRule('id', 'integer');
 
 $filter->load(\Yii::$app->request->get());
 
-if ($filter->id)
-{
+if ($filter->id) {
     $dataProvider->query->andWhere(['id' => $filter->id]);
 }
 ?>
 <? $form = \skeeks\cms\modules\admin\widgets\filters\AdminFiltersForm::begin([
-        'action' => '/' . \Yii::$app->request->pathInfo,
-    ]); ?>
+    'action' => '/' . \Yii::$app->request->pathInfo,
+]); ?>
 
-    <?= $form->field($searchModel, 'status')->listBox(\yii\helpers\ArrayHelper::merge(['' => null],
-        \skeeks\cms\reviews2\models\Reviews2Message::getStatuses()
-    ), ['size' => 1])->setVisible(); ?>
+<?= $form->field($searchModel, 'status')->listBox(\yii\helpers\ArrayHelper::merge(['' => null],
+    \skeeks\cms\reviews2\models\Reviews2Message::getStatuses()
+), ['size' => 1])->setVisible(); ?>
 
 <? $form::end(); ?>

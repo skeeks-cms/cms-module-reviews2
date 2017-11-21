@@ -5,6 +5,7 @@
  * @copyright 2010 SkeekS (СкикС)
  * @date 15.05.2015
  */
+
 namespace skeeks\cms\reviews2\controllers;
 
 use skeeks\cms\components\Cms;
@@ -34,23 +35,23 @@ class BackendController extends Controller
     public function behaviors()
     {
         return
-        [
-            //Проверка доступа к админ панели
-            'access' =>
             [
-                'class'         => AccessControl::className(),
-                'rules' =>
-                [
+                //Проверка доступа к админ панели
+                'access' =>
                     [
-                        'allow'         => true,
-                        'roles'         =>
-                        [
-                            Reviews2Component::PERMISSION_ADD_REVIEW
-                        ],
+                        'class' => AccessControl::className(),
+                        'rules' =>
+                            [
+                                [
+                                    'allow' => true,
+                                    'roles' =>
+                                        [
+                                            Reviews2Component::PERMISSION_ADD_REVIEW
+                                        ],
+                                ],
+                            ]
                     ],
-                ]
-            ],
-        ];
+            ];
     }
 
     /**
@@ -67,75 +68,62 @@ class BackendController extends Controller
     }
 
 
-
     public function actionSubmit()
     {
         $rr = new RequestResponse();
 
         $model = new Reviews2Message();
 
-        if ($rr->isRequestOnValidateAjaxForm())
-        {
+        if ($rr->isRequestOnValidateAjaxForm()) {
             return $rr->ajaxValidateForm($model);
         }
 
-        if ($rr->isRequestAjaxPost())
-        {
+        if ($rr->isRequestAjaxPost()) {
             $model->scenario = Reviews2Message::SCENARIO_SITE_INSERT;
 
-            $model->page_url    = \Yii::$app->request->referrer;
-            if ($model->load(\Yii::$app->request->post()))
-            {
+            $model->page_url = \Yii::$app->request->referrer;
+            if ($model->load(\Yii::$app->request->post())) {
                 //Проверка на максимальное количество отзывов к одному посту от одного пользователя.
-                    $messagesFind = Reviews2Message::find();
-                    if (\Yii::$app->user->isGuest)
-                    {
-                        $messagesFind
-                            ->andWhere([
-                                'ip' => \Yii::$app->request->userIP
-                            ])
-                            ->andWhere([
-                                'or',
-                                ['created_by' => null],
-                                ['created_by' => ''],
-                            ])
-                        ;
-                    } else
-                    {
-                        $messagesFind->andWhere(['created_by' => \Yii::$app->user->identity->id]);
-                    }
-
-                    $messagesFind2 = clone $messagesFind;
-
+                $messagesFind = Reviews2Message::find();
+                if (\Yii::$app->user->isGuest) {
                     $messagesFind
-                            ->andWhere(['status' => Reviews2Message::STATUS_ALLOWED])
-                            ->andWhere(['element_id' => $model->element_id])
-                    ;
+                        ->andWhere([
+                            'ip' => \Yii::$app->request->userIP
+                        ])
+                        ->andWhere([
+                            'or',
+                            ['created_by' => null],
+                            ['created_by' => ''],
+                        ]);
+                } else {
+                    $messagesFind->andWhere(['created_by' => \Yii::$app->user->identity->id]);
+                }
 
-                    if (\Yii::$app->reviews2->maxCountMessagesForUser != 0)
-                    {
-                        if ($messagesFind->count() >= \Yii::$app->reviews2->maxCountMessagesForUser)
-                        {
-                            $rr->success = false;
-                            $rr->message = \Yii::t('skeeks/reviews2',"You have already added a review for this post earlier.");
+                $messagesFind2 = clone $messagesFind;
 
-                            return $rr;
-                        }
+                $messagesFind
+                    ->andWhere(['status' => Reviews2Message::STATUS_ALLOWED])
+                    ->andWhere(['element_id' => $model->element_id]);
+
+                if (\Yii::$app->reviews2->maxCountMessagesForUser != 0) {
+                    if ($messagesFind->count() >= \Yii::$app->reviews2->maxCountMessagesForUser) {
+                        $rr->success = false;
+                        $rr->message = \Yii::t('skeeks/reviews2', "You have already added a review for this post earlier.");
+
+                        return $rr;
                     }
+                }
 
                 //Проверка частоты добавления отзывов
-                if (\Yii::$app->reviews2->securityEnabledRateLimit == Cms::BOOL_Y)
-                {
+                if (\Yii::$app->reviews2->securityEnabledRateLimit == Cms::BOOL_Y) {
                     $messagesFind2 = Reviews2Message::find();
-                    if (\Yii::$app->user->isGuest)
-                    {
+                    if (\Yii::$app->user->isGuest) {
                         $messagesFind2->andWhere(['ip' => \Yii::$app->request->userIP]);
-                    } else
-                    {
+                    } else {
                         $messagesFind2->andWhere(['created_by' => \Yii::$app->user->identity->id]);
                     }
 
-                    $lastTime = \Yii::$app->formatter->asTimestamp(time()) - (int) \Yii::$app->reviews2->securityRateLimitTime;
+                    $lastTime = \Yii::$app->formatter->asTimestamp(time()) - (int)\Yii::$app->reviews2->securityRateLimitTime;
 
                     $messagesFind2->andWhere([
                         '>=', 'created_at', $lastTime
@@ -143,44 +131,38 @@ class BackendController extends Controller
 
                     //print_r($messagesFind2->createCommand()->rawSql);die;
 
-                    if ($messagesFind2->count() >= \Yii::$app->reviews2->securityRateLimitRequests)
-                    {
+                    if ($messagesFind2->count() >= \Yii::$app->reviews2->securityRateLimitRequests) {
                         $rr->success = false;
-                        $rr->message = \Yii::t('skeeks/reviews2',"You too often add reviews.");
+                        $rr->message = \Yii::t('skeeks/reviews2', "You too often add reviews.");
 
                         return $rr;
                     }
                 }
 
 
-                if ($model->save())
-                {
+                if ($model->save()) {
                     $rr->success = true;
 
-                    if (\Yii::$app->reviews2->enabledBeforeApproval == Cms::BOOL_Y)
-                    {
+                    if (\Yii::$app->reviews2->enabledBeforeApproval == Cms::BOOL_Y) {
                         $rr->message = \Yii::$app->reviews2->messageSuccessBeforeApproval;
-                    } else
-                    {
-                        $rr->message        = \Yii::$app->reviews2->messageSuccess;
+                    } else {
+                        $rr->message = \Yii::$app->reviews2->messageSuccess;
 
                         //Отключена предмодерация, сразу публикуем
-                        $model->status      = Reviews2Message::STATUS_ALLOWED;
+                        $model->status = Reviews2Message::STATUS_ALLOWED;
                         $model->save();
                     }
 
                     $model->notifyCreate();
-                } else
-                {
+                } else {
 
                     $rr->success = false;
-                    $rr->message = \Yii::t('skeeks/reviews2',"Review not added").": " . implode(",", $model->getFirstErrors());
+                    $rr->message = \Yii::t('skeeks/reviews2', "Review not added") . ": " . implode(",", $model->getFirstErrors());
                 }
 
-            } else
-            {
+            } else {
                 $rr->success = false;
-                $rr->message = \Yii::t('skeeks/reviews2',"Review not added").": " . implode(",", $model->getFirstErrors());
+                $rr->message = \Yii::t('skeeks/reviews2', "Review not added") . ": " . implode(",", $model->getFirstErrors());
             }
         }
 

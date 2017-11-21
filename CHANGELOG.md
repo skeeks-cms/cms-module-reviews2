@@ -1,6 +1,10 @@
 Процесс разработки модуля.
 ==============
 
+2.1.2.pre
+-----------------
+ * Change configuration authManager
+ 
 2.1.1
 -----------------
  * Pgsql support

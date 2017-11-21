@@ -1,7 +1,7 @@
 Процесс разработки модуля.
 ==============
 
-2.1.2.pre
+2.1.2
 -----------------
  * Code style
  * Change configuration authManager

@@ -138,7 +138,7 @@ class Reviews2Widget extends WidgetRenderable
      */
     public $modelMessage;
 
-    protected function _run()
+    public function run()
     {
         $this->initDataProvider();
 
@@ -164,7 +164,7 @@ class Reviews2Widget extends WidgetRenderable
 
         $this->modelMessage = new Reviews2Message();
 
-        return parent::_run();
+        return parent::run();
     }
 
 

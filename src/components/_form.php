@@ -70,13 +70,13 @@ use yii\helpers\Html;
 
 <?= $form->fieldSet(\Yii::t('skeeks/reviews2', 'Access')); ?>
 
-<? \yii\bootstrap\Alert::begin([
+<? $alert = \yii\bootstrap\Alert::begin([
     'options' => [
         'class' => 'alert-warning',
     ],
 ]); ?>
 <b><?= \Yii::t('skeeks/reviews2', 'Attention!'); ?></b> <?= \Yii::t('skeeks/reviews2', 'Permissions are stored in real time. Thus, these settings are independent of site or user.'); ?>
-<? \yii\bootstrap\Alert::end() ?>
+<? $alert::end() ?>
 
 <?= skeeks\cms\rbac\widgets\adminPermissionForRoles\AdminPermissionForRolesWidget::widget([
     'permissionName' => \skeeks\cms\reviews2\components\Reviews2Component::PERMISSION_ADD_REVIEW,

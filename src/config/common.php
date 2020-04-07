@@ -14,17 +14,24 @@ return [
         'i18n' => [
             'translations' => [
                 'skeeks/reviews2' => [
-                    'class' => 'yii\i18n\PhpMessageSource',
+                    'class'    => 'yii\i18n\PhpMessageSource',
                     'basePath' => '@skeeks/cms/reviews2/messages',
-                    'fileMap' => [
+                    'fileMap'  => [
                         'skeeks/reviews2' => 'main.php',
                     ],
-                ]
-            ]
+                ],
+            ],
         ],
 
         'authManager' => [
-            'config' => require __DIR__ . '/_permissions.php'
+            'config' => [
+                'permissions' => [
+                    [
+                        'name'        => \skeeks\cms\reviews2\components\Reviews2Component::PERMISSION_ADD_REVIEW,
+                        'description' => ['skeeks/reviews2', 'Adding reviews'],
+                    ],
+                ],
+            ],
         ],
     ],
 ];

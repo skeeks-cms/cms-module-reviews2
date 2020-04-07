@@ -13,9 +13,12 @@ use yii\helpers\Html;
 ?>
 
 <?= $form->fieldSet('Основное'); ?>
-<?= $form->fieldRadioListBoolean($model, 'enabledBeforeApproval'); ?>
-<?= $form->fieldInputInt($model, 'maxValue')->hint(\Yii::t('skeeks/reviews2', 'You can specify the maximum rating value, ie the user will vote, exposing a rating from 1 to the value you specified in steps of 1.')); ?>
-<?= $form->fieldInputInt($model, 'maxCountMessagesForUser'); ?>
+<?= $form->field($model, 'enabledBeforeApproval')->checkbox([
+    'uncheck' => \skeeks\cms\components\Cms::BOOL_N,
+    'value'   => \skeeks\cms\components\Cms::BOOL_Y,
+]); ?>
+<?= $form->field($model, 'maxValue')->hint(\Yii::t('skeeks/reviews2', 'You can specify the maximum rating value, ie the user will vote, exposing a rating from 1 to the value you specified in steps of 1.')); ?>
+<?= $form->field($model, 'maxCountMessagesForUser'); ?>
 <?= $form->field($model, 'messageSuccessBeforeApproval')->textarea(['rows' => 4]); ?>
 <?= $form->field($model, 'messageSuccess')->textarea(['rows' => 4]); ?>
 
@@ -39,9 +42,12 @@ use yii\helpers\Html;
 <?= $form->fieldSetEnd(); ?>
 
 <?= $form->fieldSet(\Yii::t('skeeks/reviews2', 'Security')); ?>
-<?= $form->fieldRadioListBoolean($model, 'securityEnabledRateLimit'); ?>
-<?= $form->fieldInputInt($model, 'securityRateLimitRequests'); ?>
-<?= $form->fieldInputInt($model, 'securityRateLimitTime'); ?>
+<?= $form->field($model, 'securityEnabledRateLimit')->checkbox([
+    'uncheck' => \skeeks\cms\components\Cms::BOOL_N,
+    'value'   => \skeeks\cms\components\Cms::BOOL_Y,
+]); ?>
+<?= $form->field($model, 'securityRateLimitRequests'); ?>
+<?= $form->field($model, 'securityRateLimitTime'); ?>
 <?= $form->fieldSetEnd(); ?>
 
 <?= $form->fieldSet(\Yii::t('skeeks/reviews2', 'Contact elements')); ?>

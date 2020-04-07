@@ -5,4 +5,12 @@
  * @copyright 2010 SkeekS (СкикС)
  * @date 07.03.2015
  */
-return [];
+return [
+    'controllerMap' => [
+        'migrate' => [
+            'migrationPath' => [
+                '@skeeks/cms/reviews2/migrations',
+            ],
+        ],
+    ]
+];

@@ -13,15 +13,21 @@
 <?= $form->fieldSetEnd(); ?>
 
 <?= $form->fieldSet(\Yii::t('skeeks/reviews2', 'Pagination')); ?>
-<?= $form->fieldRadioListBoolean($model, 'enabledPaging', \Yii::$app->cms->booleanFormat()); ?>
-<?= $form->fieldRadioListBoolean($model, 'enabledPjaxPagination', \Yii::$app->cms->booleanFormat()); ?>
-<?= $form->fieldInputInt($model, 'pageSize'); ?>
+<?= $form->field($model, 'enabledPaging')->checkbox([
+    'uncheck' => \skeeks\cms\components\Cms::BOOL_N,
+    'value'   => \skeeks\cms\components\Cms::BOOL_Y,
+]); ?>
+<?= $form->field($model, 'enabledPjaxPagination')->checkbox([
+    'uncheck' => \skeeks\cms\components\Cms::BOOL_N,
+    'value'   => \skeeks\cms\components\Cms::BOOL_Y,
+]); ?>
+<?= $form->field($model, 'pageSize'); ?>
 <?= $form->field($model, 'pageParamName')->textInput(); ?>
 
 <?= $form->fieldSetEnd(); ?>
 
 <?= $form->fieldSet(\Yii::t('skeeks/reviews2', 'Sort and count')); ?>
-<?= $form->fieldInputInt($model, 'limit'); ?>
+<?= $form->field($model, 'limit'); ?>
 <?= $form->fieldSelect($model, 'orderBy', (new \skeeks\cms\reviews2\models\Reviews2Message())->attributeLabels()); ?>
 <?= $form->fieldSelect($model, 'order', [
     SORT_ASC => "ASC (" . \Yii::t('skeeks/reviews2', 'from smallest to largest') . ")",

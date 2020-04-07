@@ -52,7 +52,7 @@ class Reviews2Widget extends WidgetRenderable
     //Условия для запроса
     public $limit = 0;
     public $statuses = [Reviews2Message::STATUS_ALLOWED];
-    public $site_codes = [];
+    public $site_ids = [];
     public $createdBy = [];
 
 
@@ -85,7 +85,7 @@ class Reviews2Widget extends WidgetRenderable
 
                 'limit' => \Yii::t('skeeks/reviews2', 'The maximum number of entries in the sample (limit)'),
                 'statuses' => \Yii::t('skeeks/reviews2', 'Consider statuses'),
-                'site_codes' => \Yii::t('skeeks/reviews2', 'Consider sites'),
+                'site_ids' => \Yii::t('skeeks/reviews2', 'Consider sites'),
                 'createdBy' => \Yii::t('skeeks/reviews2', 'Created By'),
 
             ]);
@@ -111,7 +111,7 @@ class Reviews2Widget extends WidgetRenderable
 
                 ['limit', 'integer'],
                 ['statuses', 'safe'],
-                ['site_codes', 'safe'],
+                ['site_ids', 'safe'],
                 ['createdBy', 'safe'],
 
 
@@ -146,8 +146,8 @@ class Reviews2Widget extends WidgetRenderable
             $this->dataProvider->query->andWhere([Reviews2Message::tableName() . '.created_by' => $this->createdBy]);
         }
 
-        if ($this->site_codes) {
-            $this->dataProvider->query->andWhere([Reviews2Message::tableName() . '.site_code' => $this->site_codes]);
+        if ($this->site_ids) {
+            $this->dataProvider->query->andWhere([Reviews2Message::tableName() . '.cms_site_id' => $this->site_ids]);
         }
 
         if ($this->statuses) {

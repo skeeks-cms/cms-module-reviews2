@@ -217,12 +217,12 @@ class Reviews2Message extends \skeeks\cms\models\Core
             [['rating'], 'integer', 'min' => 1, 'max' => (int)\Yii::$app->reviews2->maxValue],
             [['ip'], 'string', 'max' => 32],
             [['page_url'], 'string'],
-            [['site_code'], 'string', 'max' => 15],
+            [['cms_site_id'], 'integer'],
             [['user_name', 'user_email', 'user_phone', 'user_city'], 'string', 'max' => 255],
 
             [['status'], 'in', 'range' => array_keys(self::getStatuses())],
 
-            ['site_code', 'default', 'value' => \Yii::$app->cms->site->code],
+            ['cms_site_id', 'default', 'value' => \Yii::$app->cms->site->id],
 
             ['published_at', 'integer'],
             ['processed_at', 'integer'],
@@ -301,7 +301,7 @@ class Reviews2Message extends \skeeks\cms\models\Core
             'data_session' => \Yii::t('skeeks/reviews2', 'Data Session'),
             'data_cookie' => \Yii::t('skeeks/reviews2', 'Data Cookie'),
             'data_request' => \Yii::t('skeeks/reviews2', 'Data Request'),
-            'site_code' => \Yii::t('skeeks/reviews2', 'Site'),
+            'cms_site_id' => \Yii::t('skeeks/reviews2', 'Site'),
             'user_name' => \Yii::t('skeeks/reviews2', 'Name'),
             'user_email' => \Yii::t('skeeks/reviews2', 'Email'),
             'user_phone' => \Yii::t('skeeks/reviews2', 'Phone'),
@@ -357,7 +357,7 @@ class Reviews2Message extends \skeeks\cms\models\Core
      */
     public function getSiteCode()
     {
-        return $this->hasOne(CmsSite::className(), ['code' => 'site_code']);
+        return $this->hasOne(CmsSite::className(), ['id' => 'cms_site_id']);
     }
 
     /**
@@ -365,7 +365,7 @@ class Reviews2Message extends \skeeks\cms\models\Core
      */
     public function getSite()
     {
-        return $this->hasOne(CmsSite::className(), ['code' => 'site_code']);
+        return $this->hasOne(CmsSite::className(), ['id' => 'cms_site_id']);
     }
 
     /**

@@ -42,7 +42,6 @@ use yii\web\Application;
  * @property string $data_session
  * @property string $data_cookie
  * @property string $data_request
- * @property string $site_code
  * @property string $user_name
  * @property string $user_email
  * @property string $user_phone
@@ -52,7 +51,6 @@ use yii\web\Application;
  * @property CmsContent $content
  * @property User $createdBy
  * @property CmsContentElement $element
- * @property CmsSite $siteCode
  * @property CmsSite $site
  * @property User $updatedBy
  */
@@ -102,14 +100,15 @@ class Reviews2Message extends \skeeks\cms\models\Core
     {
         parent::init();
 
-        $this->on(BaseActiveRecord::EVENT_AFTER_INSERT, [$this, "checkDataAfterSave"]);
-        $this->on(BaseActiveRecord::EVENT_AFTER_UPDATE, [$this, "checkDataAfterSave"]);
+        //$this->on(BaseActiveRecord::EVENT_AFTER_INSERT, [$this, "checkDataAfterSave"]);
+        //$this->on(BaseActiveRecord::EVENT_AFTER_UPDATE, [$this, "checkDataAfterSave"]);
 
         $this->on(BaseActiveRecord::EVENT_BEFORE_INSERT, [$this, "checkDataBeforeSave"]);
         $this->on(BaseActiveRecord::EVENT_BEFORE_UPDATE, [$this, "checkDataBeforeSave"]);
     }
 
     /**
+     * @deprecated
      * После сохранения или обновления рейтинга, нужно обновить элемент.
      *
      * @throws \skeeks\cms\relatedProperties\models\InvalidParamException
@@ -121,9 +120,39 @@ class Reviews2Message extends \skeeks\cms\models\Core
         }
     }
 
+
+    /**
+     * @param CmsContentElement $element
+     * @return \skeeks\cms\query\CmsActiveQuery
+     */
+    static public function findAllowedForElement(CmsContentElement $element)
+    {
+        return static::find()->where(['element_id' => $element->id])->andWhere(['status' => static::STATUS_ALLOWED]);
+    }
+
+    /**
+     * @param array $messages
+     * @return float|int
+     */
+    static public function getRatingForMessages($messages = [])
+    {
+        if (!$messages) {
+            return 0;
+        }
+
+        $result = 0;
+        foreach ($messages as $message)
+        {
+            $result = $result + $message->rating;
+        }
+
+        return ($result / count($messages));
+    }
+
     /**
      * После сохранения или обновления рейтинга, нужно обновить элемент.
      *
+     * @deprecated
      * @throws \skeeks\cms\relatedProperties\models\InvalidParamException
      */
     public function checkDataAfterSave()
@@ -222,7 +251,7 @@ class Reviews2Message extends \skeeks\cms\models\Core
 
             [['status'], 'in', 'range' => array_keys(self::getStatuses())],
 
-            ['cms_site_id', 'default', 'value' => \Yii::$app->cms->site->id],
+            ['cms_site_id', 'default', 'value' => \Yii::$app->skeeks->site->id],
 
             ['published_at', 'integer'],
             ['processed_at', 'integer'],
@@ -352,13 +381,6 @@ class Reviews2Message extends \skeeks\cms\models\Core
         return $this->hasOne(CmsContentElement::className(), ['id' => 'element_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSiteCode()
-    {
-        return $this->hasOne(CmsSite::className(), ['id' => 'cms_site_id']);
-    }
 
     /**
      * @return \yii\db\ActiveQuery

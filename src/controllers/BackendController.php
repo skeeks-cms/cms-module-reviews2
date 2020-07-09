@@ -27,6 +27,10 @@ use yii\web\Controller;
  */
 class BackendController extends Controller
 {
+    public function init()
+    {
+        return parent::init();
+    }
 
     /**
      * Проверка доступа к админке

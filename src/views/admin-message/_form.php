@@ -34,7 +34,7 @@ if (!$model->isNewRecord) {
 
 <?= $form->fieldSet(\Yii::t('skeeks/reviews2', 'Author')); ?>
 <?= $form->fieldSelect($model, 'created_by', \yii\helpers\ArrayHelper::map(
-    \skeeks\cms\models\User::find()->active()->all(),
+    \skeeks\cms\models\User::find()->cmsSite()->active()->all(),
     'id',
     'displayName'
 )) ?>
@@ -49,7 +49,7 @@ if (!$model->isNewRecord) {
 <?= $form->fieldSelect($model, 'status', \skeeks\cms\reviews2\models\Reviews2Message::getStatuses()); ?>
 
 <?= $form->fieldSelect($model, 'processed_by', \yii\helpers\ArrayHelper::map(
-    \skeeks\cms\models\User::find()->active()->all(),
+    \skeeks\cms\models\User::find()->cmsSite()->active()->all(),
     'id',
     'displayName'
 )); ?>

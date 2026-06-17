@@ -13,14 +13,14 @@ return [
                 [
                     [
                         "label" => \Yii::t('skeeks/reviews2', "Reviews"),
-                        "img" => ['\skeeks\cms\reviews2\assets\Reviews2Asset', 'icons/reviews.jpg'],
+                        "img" => ['\skeeks\cms\assets\CmsAsset', 'images/icons/admin-menu/reviews.svg'],
 
                         'items' =>
                             [
                                 [
                                     "label" => \Yii::t('skeeks/reviews2', "Reviews"),
                                     "url" => ["reviews2/admin-message"],
-                                    "img" => ['\skeeks\cms\reviews2\assets\Reviews2Asset', 'icons/reviews.jpg'],
+                                    "img" => ['\skeeks\cms\assets\CmsAsset', 'images/icons/admin-menu/reviews.svg'],
                                 ],
 
                                 /*[

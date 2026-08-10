@@ -113,7 +113,7 @@ if (!$model->isNewRecord) {
 
     <?= $form->fieldSet(\Yii::t('skeeks/reviews2', 'For developers')); ?>
 
-    <div class="sx-block">
+    <div class="sx-surface sx-surface--raised sx-surface--padded">
         <h3><?= \Yii::t('skeeks/reviews2', 'Additional information that may be useful in some cases, the developers.'); ?></h3>
         <small><?= \Yii::t('skeeks/reviews2', 'For the convenience of viewing the data, you can use the service'); ?>:
             <a href="http://jsonformatter.curiousconcept.com/#" target="_blank">http://jsonformatter.curiousconcept.com/#</a>
